@@ -24,7 +24,8 @@
 
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <!-- Navbar Brand-->
-    <a class="navbar-brand ps-3" href="/admin">Warehawz</a>
+    <a class="navbar-brand ps-3" href="/admin" style="font-size: 1rem;">Warehouse Management System</a>
+    <span class="ms-4"></span>
     <!-- Sidebar Toggle-->
     <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
     <!-- Navbar Search-->
