@@ -10,7 +10,7 @@ include(APPDIR.'views/layouts/sbnav.php');
                 <?php include(APPDIR.'views/layouts/errors.php'); ?>
                 <h1 class="mt-4">Edit Customer</h1>
                 <ol class="breadcrumb mb-4">
-                    <li class="breadcrumb-item active">Customer Profile</li>
+                    <li class="breadcrumb-item active">Update customer form</li>
                 </ol>
                 
                 <form method="post">

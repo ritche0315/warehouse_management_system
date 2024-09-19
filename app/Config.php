@@ -21,7 +21,7 @@ class Config{
 
             //database
             'db_type'     => 'mysql',
-            'db_host'     => 'localhost',
+            'db_host'     => '127.0.0.1:3307',
             'db_name'     => 'warehouse_db',
             'db_username' => 'root',
             'db_password' => '',

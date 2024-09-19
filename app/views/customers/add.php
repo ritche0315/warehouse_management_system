@@ -10,7 +10,7 @@ include(APPDIR.'views/layouts/errors.php');
             <div class="container-fluid px-4">
                 <h1 class="mt-4">Add Customer</h1>
                 <ol class="breadcrumb mb-4">
-                    <li class="breadcrumb-item active">register new customer</li>
+                    <li class="breadcrumb-item active">Add customer form</li>
                 </ol>
                 
                 <form method="post">
