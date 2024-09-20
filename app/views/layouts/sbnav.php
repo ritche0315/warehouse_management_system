@@ -4,7 +4,7 @@
             <div class="sb-sidenav-menu">
                 <div class="nav">
                     <div class="sb-sidenav-menu-heading">Core</div>
-                    <a class="nav-link" href="index.html">
+                    <a class="nav-link" href="/admin">
                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                         Dashboard
                     </a>
@@ -43,8 +43,8 @@
                             </a>
                             <div class="collapse" id="pagesCollapseInventory" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="login.html">Add Inventory</a>
-                                    <a class="nav-link" href="register.html">Inventory Master</a>
+                                    <a class="nav-link" href="/inventory/add">Add Inventory</a>
+                                    <a class="nav-link" href="/inventory">Inventory Master</a>
                                 </nav>
                             </div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseWarehouse" aria-expanded="false" aria-controls="pagesCollapseAuth">
@@ -53,8 +53,8 @@
                             </a>
                             <div class="collapse" id="pagesCollapseWarehouse" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="login.html">Add Warehouse</a>
-                                    <a class="nav-link" href="register.html">Warehouse Master</a>
+                                    <a class="nav-link" href="/warehouse/add">Add Warehouse</a>
+                                    <a class="nav-link" href="/warehouse">Warehouse Master</a>
                                 </nav>
                             </div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseOrder" aria-expanded="false" aria-controls="pagesCollapseAuth">
@@ -63,8 +63,8 @@
                             </a>
                             <div class="collapse" id="pagesCollapseOrder" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="login.html">Add Order</a>
-                                    <a class="nav-link" href="register.html">Orders</a>
+                                    <a class="nav-link" href="/orders/add">Add Order</a>
+                                    <a class="nav-link" href="/orders">Orders</a>
                                 </nav>
                             </div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseCustomer" aria-expanded="false" aria-controls="pagesCollapseAuth">
@@ -73,8 +73,8 @@
                             </a>
                             <div class="collapse" id="pagesCollapseCustomer" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="login.html">Add Customer</a>
-                                    <a class="nav-link" href="register.html">Customer Master</a>
+                                    <a class="nav-link" href="/customers/add">Add Customer</a>
+                                    <a class="nav-link" href="/customers">Customer Master</a>
                                 </nav>
                             </div>
                             <!-- <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
