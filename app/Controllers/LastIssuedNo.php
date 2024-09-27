@@ -45,8 +45,10 @@ class LastissuedNo extends BaseController{
                 }
             }
             $issuedNo = $newStr."".$OrderNo;
-            Session::set('issuedNo', $issuedNo);
-            return;
+            // Session::set('issuedNo', $issuedNo);
+
+
+            return $issuedNo;
         }
 
         //generate subsequent order transaction
@@ -69,7 +71,8 @@ class LastissuedNo extends BaseController{
             }
         }
         $issuedNo = $newStr."".$newOrderNo;
-        Session::set('issuedNo', $issuedNo);
+        // Session::set('issuedNo', $issuedNo);
+        return $issuedNo;
        
     }
 

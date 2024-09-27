@@ -1,9 +1,20 @@
-.wrapper {
-    max-width: 420px;
-    margin: auto;
+#myUL, #customer-searchfilter-container{
+    list-style-type: none;
+    padding: 0;
+    position:absolute;
+    right:0;
+    left: 0;
+    order: 1;
+}
+#productSearch-wrapper, #customerSearch-wrapper{
+     position: relative;
 }
 
-.wrapper h1 {
-    margin-top: 0px;
-    font-size: 25px;
+#myUL button,  #customer-searchfilter-container button{
+    padding: 8px;
+    text-align: left;
+}
+
+#myUL button:not(.found),  #customer-searchfilter-container button:not(.found){
+    display: none;
 }

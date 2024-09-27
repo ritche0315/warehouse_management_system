@@ -7,6 +7,7 @@ use App\Helpers\Url;
 use App\Models\Customer;
 use App\Models\Warehouse;
 use App\Models\Order;
+use App\Models\Product;
 use App\Controllers\LastIssuedNo;
 
 
@@ -16,6 +17,7 @@ class Orders extends BaseController{
     protected $customer;
     protected $warehouse;
     protected $lastIssuedNo;
+    protected $product;
 
     public function __construct(){
         parent::__construct();
@@ -28,6 +30,7 @@ class Orders extends BaseController{
         $this->customer = new Customer();
         $this->warehouse = new Warehouse();
         $this->lastIssuedNo = new LastIssuedNo();
+        $this->product = new Product();
     }
 
     //view function
@@ -36,6 +39,11 @@ class Orders extends BaseController{
 
         $title = 'Order';
         $this->view->render('orders/index', compact('orders','title'));
+    }
+
+    public function love(){
+        $title = 'Love';
+        $this->view->render('orders/love', compact('title'));
     }
 
     //add function
@@ -73,9 +81,12 @@ class Orders extends BaseController{
 
         $title = 'Add Order';
         //populate warehouse and product
-        $this->lastIssuedNo->generateOrderNumber();
+        // $this->lastIssuedNo->generateOrderNumber();
+        $issuedNo = $this->lastIssuedNo->generateOrderNumber();
+        $products = $this->product->getProducts();
+        $customers = $this->customer->getCustomers();
         //render view
-        $this->view->render('orders/add', compact('errors', 'title'));
+        $this->view->render('orders/add', compact('errors', 'products','customers', 'issuedNo',  'title'));
     }
     // edit function''
     public function edit($id){
