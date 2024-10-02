@@ -43,8 +43,8 @@ use App\Helpers\Session;
                             </div>
                         </div>
                         <div class="row g-2">
-                            <div class="col p-3 col-md-4 border">
-                                <div class="p-3 border">
+                            <div class="col p-3 col-md-4 border" style="height: 60vh;">
+                                <div class="p-3 border h-100">
                                     <div class='text-secondary mb-4'>Product Information</div>
                                     <form id='productForm'>
                                         <div class="row">
@@ -216,11 +216,11 @@ use App\Helpers\Session;
                                 </div>
                             </div>
                             <div class="col p-3 col-md-8 border">
-                                <div class="col-12 h-75">
-                                    <div class="table-responsive border h-100">
+                                <div class="col-12">
+                                    <div class="table-responsive border" style="height: 400px;">
                                         <table class='table table-borderless' id='itemlist-table'>
                                             <thead class='table-secondary'>
-                                                <th>ID</th>
+                                                <th>#</th>
                                                 <th>SKU</th>
                                                 <th>Name</th>
                                                 <th>Quantity</th>
@@ -232,11 +232,18 @@ use App\Helpers\Session;
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div class="d-flex justify-content-end gap-2">
+                                        <!-- Total row count display -->
+                                    <!-- Display Total Row Count and Total Amount -->
+                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                        <div id="rowCountDisplay" class="text-start ms-3">Total Items: 0</div>
+                                        <div id="totalAmountDisplay" class="text-end me-3 fw-bold">Total Amount: 0.00</div>
+                                    </div>
+                                    <div class="d-flex justify-content-end gap-2 my-3 mx-2 align-items-center">
+                                        <!-- <div class='flex-fill'>Total:</div> -->
                                         <a class="btn btn-success mt-3" href='/orders/love'>Submit Order</a>
                                         <button class="btn btn-danger mt-3">Cancel Order</button>
                                     </div>
-                                </div>
+                            </div>
                             </div>
 
                         </div>
@@ -293,14 +300,15 @@ use App\Helpers\Session;
                 quantity.value = 1;
             })
 
-            function populateOrderItems(orderItems){
-                const tbody = document.querySelector('#itemlist-table > tbody')
-            
-                tbody.innerHTML = ``
-                orderItems.map(orderItem=>{
+         
 
+            function populateOrderItems(orderItems){
+                const tbody = document.querySelector('#itemlist-table > tbody');
+                tbody.innerHTML = '';
+
+                orderItems.map((orderItem, index) => {
                     tbody.innerHTML += `
-                        <tr>
+                        <tr data-index="${index}">
                             <td>${orderItem.rowCount}</td>
                             <td>${orderItem.sku}</td>
                             <td>${orderItem.name}</td>
@@ -308,23 +316,66 @@ use App\Helpers\Session;
                             <td>${orderItem.unitPrice}</td>
                             <td>${orderItem.total}</td>
                             <td>
-                                delete
+                                <button type='button' class='btn btn-danger delete-btn' data-index="${index}">
+                                    <i class='fa fa-trash'></i>
+                                </button>
                             </td>
                         </tr>
-                    `
-                })
+                    `;
+                });
+
+                // Attach delete event listener to each delete button
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        let index = e.target.closest('button').getAttribute('data-index');
+                        deleteOrderItem(index);
+                    });
+                });
+
+                // Update the total row count display
+                updateRowCount();
+
+                 // Update the total amount display
+                calculateTotalAmount();
+            }
+
+            // Function to delete an order item
+            function deleteOrderItem(index) {
+                // Remove the item from the array
+                orderItems.splice(index, 1);
+
+                // Re-populate the table
+                populateOrderItems(orderItems);
+            }
+
+            // Function to update and display the total row count
+            function updateRowCount() {
+                const rowCount = orderItems.length;
+                const rowCountDisplay = document.querySelector('#rowCountDisplay');
+                
+                // Display the total number of rows
+                rowCountDisplay.textContent = `Total Rows: ${rowCount}`;
+            }
+
+            // Function to calculate and display the total amount
+            function calculateTotalAmount() {
+                let totalAmount = orderItems.reduce((sum, item) => sum + parseInt(item.total), 0);
+                const totalAmountDisplay = document.querySelector('#totalAmountDisplay');
+                
+                // Display the total amount
+                totalAmountDisplay.textContent = `Total Amount: ₱${totalAmount.toFixed(2)}`;
             }
         </script>
     </main>
     <footer class="py-4 bg-light mt-auto">
         <div class="container-fluid px-4">
             <div class="d-flex align-items-center justify-content-between small">
-                <div class="text-muted">Copyright &copy; Your Website 2023</div>
+                <div class="text-muted">Copyright &copy; Smart Stock 2024</div>
                 <div>
-                    <a href="#">Privacy Policy</a>
+                    <!-- <a href="#">Privacy Policy</a>
                     &middot;
                     <a href="#">Terms &amp; Conditions</a>
-                </div>
+                </div> -->
             </div>
         </div>
     </footer>
