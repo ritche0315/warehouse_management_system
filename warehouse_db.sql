@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Sep 18, 2024 at 06:00 PM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.0.28
+-- Host: 127.0.0.1:3307
+-- Generation Time: Oct 03, 2024 at 07:37 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.1.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -42,7 +42,6 @@ CREATE TABLE `customers` (
 
 INSERT INTO `customers` (`CustomerID`, `FirstName`, `LastName`, `Email`, `Phone`, `Address`) VALUES
 (1, 'erica', 'silvosa', 'ericasilvosa123@gmail.com', '12345', 'singapore'),
-(2, 'Darryl Martin', 'Miranda', 'chicboi123@gmail.com', '12345', 'Los Angeles California'),
 (3, 'Kineth', 'Pestaño', 'Kineth123@yahoo.com', '12345', 'Lizada');
 
 -- --------------------------------------------------------
@@ -58,12 +57,24 @@ CREATE TABLE `inventory` (
   `Quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `inventory`
+-- Table structure for table `lastissuedno`
 --
 
-INSERT INTO `inventory` (`InventoryID`, `WarehouseID`, `ProductID`, `Quantity`) VALUES
-(1, 1, 4, 50);
+CREATE TABLE `lastissuedno` (
+  `id` int(11) NOT NULL,
+  `YearIssued` int(11) NOT NULL,
+  `OrderNo` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `lastissuedno`
+--
+
+INSERT INTO `lastissuedno` (`id`, `YearIssued`, `OrderNo`) VALUES
+(5, 2024, 2);
 
 -- --------------------------------------------------------
 
@@ -76,6 +87,7 @@ CREATE TABLE `orderitem` (
   `OrderID` int(10) NOT NULL,
   `ProductID` int(10) NOT NULL,
   `UnitPrice` double NOT NULL,
+  `Quantity` int(11) NOT NULL,
   `TotalPrice` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -112,7 +124,14 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`ProductID`, `SKU`, `Name`, `Description`, `UnitPrice`) VALUES
-(4, 'product123', 'product1', 'product x', 100);
+(7, 'PROD0001', 'Ryzen 5 3400G', '4cores 8threads 3.90ghz speed APU', 7500),
+(8, 'PROD0002', 'B450 Biostar Motherboard', 'DDR4 2slots  M.2 Slot', 4500),
+(9, 'PROD0003', 'Ripjaws Ram', '16gb DDR4 3200mhz', 3200),
+(10, 'PROD0004', 'INPLAY 450w PSU', '80+ bronze 450watts Power supply ', 1500),
+(11, 'PROD0005', 'Ramsta M.2 SSD', 'M.2 SSD 128gb', 1000),
+(12, 'PROD0006', 'LED LG Monitor 75hz', 'LG Monitor 75hz, 21 inches LED', 4950),
+(13, 'PROD0007', 'INPLAY Tempered Glass Casing', 'Tempered Glass Casing', 1150),
+(14, 'PROD0007', 'Fantech X9 Thor Gaming mouse', '2m clicks. LED light', 650);
 
 -- --------------------------------------------------------
 
@@ -153,7 +172,7 @@ CREATE TABLE `warehouse` (
 --
 
 INSERT INTO `warehouse` (`WarehouseID`, `Name`, `Location`) VALUES
-(1, 'Smart Stock', 'Toril');
+(1, 'Stock Smart', 'Toril');
 
 --
 -- Indexes for dumped tables
@@ -172,6 +191,12 @@ ALTER TABLE `inventory`
   ADD PRIMARY KEY (`InventoryID`),
   ADD KEY `WarehouseID` (`WarehouseID`),
   ADD KEY `ProductID` (`ProductID`);
+
+--
+-- Indexes for table `lastissuedno`
+--
+ALTER TABLE `lastissuedno`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `orderitem`
@@ -221,7 +246,13 @@ ALTER TABLE `customers`
 -- AUTO_INCREMENT for table `inventory`
 --
 ALTER TABLE `inventory`
-  MODIFY `InventoryID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `InventoryID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `lastissuedno`
+--
+ALTER TABLE `lastissuedno`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `orderitem`
@@ -239,7 +270,7 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `ProductID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `ProductID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `users`
