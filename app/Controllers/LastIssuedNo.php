@@ -44,7 +44,7 @@ class LastissuedNo extends BaseController{
                     $newStr = $newStr . $date[$i];
                 }
             }
-            $issuedNo = $newStr."".$OrderNo;
+            $issuedNo = $newStr."".$orderNo;
             // Session::set('issuedNo', $issuedNo);
 
 
@@ -76,4 +76,5 @@ class LastissuedNo extends BaseController{
        
     }
 
+    
 }

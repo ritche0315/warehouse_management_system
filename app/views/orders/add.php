@@ -4,7 +4,7 @@ include(APPDIR.'views/layouts/nav.php');
 include(APPDIR.'views/layouts/sbnav.php');
 use App\Helpers\Session;
 ?>
-
+<?php $warehouseid = null;?>
 <div id="layoutSidenav_content">
     <main>
         <div class="container-fluid px-4">
@@ -32,7 +32,7 @@ use App\Helpers\Session;
                                                     <?php
                                                     // Loop through each item in the PHP array and output it as a list item
                                                     foreach ($customers as $item) {
-                                                        echo "<button type='button' class='btn btn-secondary rounded-0 customerItemButton' value='".htmlspecialchars($item->CustomerID)."'>" . htmlspecialchars($item->FirstName)." ".htmlspecialchars($item->LastName)  . "</button>";
+                                                        echo "<button type='button' class='btn btn-secondary rounded-0 customerItemButton' data-customerid='".htmlspecialchars($item->CustomerID)."'>" . htmlspecialchars($item->FirstName)." ".htmlspecialchars($item->LastName)  . "</button>";
                                                     }
                                                     ?>
                                                 </div>                                        
@@ -43,25 +43,31 @@ use App\Helpers\Session;
                             </div>
                         </div>
                         <div class="row g-2">
-                            <div class="col p-3 col-md-4 border" style="height: 60vh;">
+                            <div class="col p-3 col-md-4 border">
                                 <div class="p-3 border h-100">
                                     <div class='text-secondary mb-4'>Product Information</div>
                                     <form id='productForm'>
                                         <div class="row">
                                             <div class="col">
+
+                                                <div class="control-group">
+                                                    <!-- <label for="warehouse" class="control-label">Select warehouse</label> -->
+                                                    <select class='form-select' name='warehouse-select' id='warehouse-select'>
+                                                        <option value="0" selected>Select warehouse</option>
+                                                        <?php foreach($warehouses as $warehouse){ ?>
+                                                            <option value=<?=$warehouse->WarehouseID?>><?=$warehouse->Name?></option>
+                                                        <?php }?>
+                                                    </select>
+                                                </div>
+                                                
                                                 <div class="control-group">
                                                     <div id='productSearch-wrapper'>
                                                         
                                                         <label for="product" class="control-label">Search Product</label>
-                                                        <input type="text" class="form-control" onkeyup='searchFunction()' name='product' id='product' placeholder="Search Product">
+                                                        <input type="text" class="form-control" onkeyup='searchFunction()' name='product' id='product' placeholder="Search Product" required>
                                                        
                                                         <div id="myUL" class='bg-light border d-flex flex-column'>
-                                                            <?php
-                                                            // Loop through each item in the PHP array and output it as a list item
-                                                            foreach ($products as $item) {
-                                                                echo "<button type='button' class='btn btn-secondary rounded-0 productItemButton' value='".htmlspecialchars($item->ProductID)."'>" . htmlspecialchars($item->Name) . "</button>";
-                                                            }
-                                                            ?>
+                                                           
                                                         </div>
                                                     </div>
                                                                                                         
@@ -109,10 +115,15 @@ use App\Helpers\Session;
 
 
                                                 </script>
-                                                
+
+                                                <div class="control-group">
+                                                    <label for="warehouse" class="control-label">Warehouse</label>
+                                                    <input type="text" class="form-control" name='warehouse' id='warehouse' required>
+                                                </div>
+
                                                 <div class="control-group">
                                                     <label for="prodName" class="control-label">Name</label>
-                                                    <input type="text" class="form-control" name='prodName' id='prodName'>
+                                                    <input type="text" class="form-control" name='prodName' id='prodName' required>
                                                 </div>
                                                 
                                                 
@@ -123,7 +134,7 @@ use App\Helpers\Session;
                                             </div>
                                             
                                             <div class="control-group">
-                                                <input type="submit" class="btn btn-success offset-5 mt-3"  name='submit' value='Add'>
+                                                <button type='submit' class="btn btn-success offset-5 mt-3">Add</button>
                                             </div>
                                         </div>
                                     </form>
@@ -169,26 +180,6 @@ use App\Helpers\Session;
                                             }
 
 
-                                        //add button click event on product item button                                       
-                                        const productItemButton = document.getElementsByClassName('productItemButton')
-                                        
-                                        Array.from(productItemButton).forEach(item=>{
-                                            item.addEventListener('click', ()=>{
-                                                const productName = document.querySelector('#prodName')
-                                                productName.value = item.textContent
-                                                const product = document.querySelector('#product')
-                                                product.value = item.textContent
-                                                 // Get the list of items
-                                                var ul = document.getElementById("myUL");
-                                                var li = ul.getElementsByTagName('button');
-                                                // Loop through all list items, and hide those that don't match the search query
-                                                for (var i = 0; i < li.length; i++) {
-                                                        li[i].classList.remove("found");
-
-                                                }
-
-                                            })
-                                        })
                                         //add button click event on customer item button          
                                         const customerItemButton = document.getElementsByClassName('customerItemButton')
 
@@ -196,6 +187,7 @@ use App\Helpers\Session;
                                             item.addEventListener('click', ()=>{
                                                 const customer = document.querySelector('#customer')
                                                 customer.value = item.textContent
+                                                customer.dataset.customerid = item.dataset.customerid
                                                  // Get the list of items
                                                 var ul = document.getElementById("customer-searchfilter-container");
                                                 var li = ul.getElementsByTagName('button');
@@ -238,11 +230,11 @@ use App\Helpers\Session;
                                         <div id="rowCountDisplay" class="text-start ms-3">Total Items: 0</div>
                                         <div id="totalAmountDisplay" class="text-end me-3 fw-bold">Total Amount: 0.00</div>
                                     </div>
-                                    <div class="d-flex justify-content-end gap-2 my-3 mx-2 align-items-center">
-                                        <!-- <div class='flex-fill'>Total:</div> -->
-                                        <a class="btn btn-success mt-3" href='/orders/love'>Submit Order</a>
-                                        <button class="btn btn-danger mt-3">Cancel Order</button>
-                                    </div>
+                                    <form id='orderSubmitForm' class='d-flex justify-content-end gap-2 my-3 mx-2 align-items-center'>
+                                    <!-- <div class='flex-fill'>Total:</div> -->
+                                    <button type='submit' class="btn btn-success mt-3" id='btn-submitorder'>Submit Order</button>
+                                    <button class="btn btn-danger mt-3">Cancel Order</button>
+                                    </form>
                             </div>
                             </div>
 
@@ -258,13 +250,16 @@ use App\Helpers\Session;
             
             const form = document.querySelector('#productForm')
             form.addEventListener('submit', (e)=>{
-                e.preventDefault();
-            
+                e.preventDefault()
                 var products = <?php echo json_encode($products);?>
 
                 var productInput = document.querySelector('#prodName')
                 const  quantity = document.querySelector('#quantity')
-             
+                const customer = document.querySelector('#customer')
+                const warehouseInput = document.querySelector('#warehouse')
+                const searchProductInput = document.querySelector('#product')
+                
+
                 // Check if product exists in the product list
                 products.map(product => {
                         if (product.Name == productInput.value) {
@@ -277,17 +272,27 @@ use App\Helpers\Session;
                             var total = parseInt(quantity.value) * parseInt(product.UnitPrice);
                             existingProduct.qty = parseInt(existingProduct.qty) + parseInt(quantity.value);
                             existingProduct.total = parseInt(existingProduct.total) + total;
+
                         } else {
                             // Add new product to the orderItems array
                             let total = parseInt(quantity.value) * parseInt(product.UnitPrice);
+
+                          
+
                             orderItems.push({
+                                "customer": parseInt(customer.dataset.customerid),
+                                "warehouseid": parseInt(warehouseInput.dataset.warehouseid),
                                 "rowCount": orderItems.length + 1,
                                 "sku": product.SKU,
+                                "prodId":product.ProductID,
                                 "name": product.Name,
-                                "qty": quantity.value,
+                                "qty": parseInt(quantity.value),
                                 "unitPrice": product.UnitPrice,
                                 "total": total
                             });
+
+                            console.log(orderItems)
+
                         }
 
                         // Update the orderItems table
@@ -296,8 +301,12 @@ use App\Helpers\Session;
 
                     }
                 });
-                productInput.value = '';
-                quantity.value = 1;
+                
+                 productInput.value = ''
+                 quantity.value = 1
+                 customer.value = ''
+                 warehouseInput.value = ''
+                 searchProductInput.value = ''
             })
 
          
@@ -365,6 +374,161 @@ use App\Helpers\Session;
                 // Display the total amount
                 totalAmountDisplay.textContent = `Total Amount: ₱${totalAmount.toFixed(2)}`;
             }
+
+            //submitorder
+            const orderSubmitForm = document.querySelector('#orderSubmitForm')
+            orderSubmitForm.addEventListener('submit', (e)=>{
+                e.preventDefault()
+                
+                let formData = new FormData()
+                formData.append('data', JSON.stringify(orderItems))
+
+                fetch('/orders/submit_order',{
+                    method:'POST',
+                    body: formData
+                })
+                .then(response=>{
+                    return response.json()
+                })
+                .then(responseData=>{
+                    console.log(responseData)
+                })
+                .catch(err=> console.log(err))
+            })
+
+        </script>
+
+        <script>
+            const prodName = document.querySelector('#prodName')
+            const product = document.querySelector('#product')
+            const quantity = document.querySelector("#quantity")
+            const warehouse = document.querySelector('#warehouse')
+            const warehouseSelect = document.querySelector('#warehouse-select')
+            const productContainer = document.querySelector('#myUL')
+                                                            
+            const productInventory = <?php echo json_encode($products);?>
+
+            var html = ``
+            productInventory.map(prod=>{
+                if(prod.WarehouseID == warehouseSelect.value){
+                    
+                    html += `
+                        <button type='button' class='btn btn-secondary rounded-0 productItemButton' data-warehouse='${JSON.stringify({"WarehouseID":prod.WarehouseID, "WarehouseName": prod.WarehouseName})}'>${prod.Name}</button>
+                    `
+                }
+
+            })
+
+            productContainer.innerHTML = html
+
+
+            //add button click event on product item button                                       
+            const productItemButton = document.getElementsByClassName('productItemButton')
+            
+            Array.from(productItemButton).forEach(item=>{
+                item.addEventListener('click', ()=>{
+                    const warehouse = JSON.parse(item.dataset.warehouse)
+
+                    const warehouseInput = document.querySelector('#warehouse')
+                    warehouseInput.value = warehouse.WarehouseName
+                    warehouseInput.dataset.warehouseid = warehouse.WarehouseID
+
+                    const productName = document.querySelector('#prodName')
+                    productName.value = item.textContent
+
+                    const product = document.querySelector('#product')
+                    product.value = item.textContent
+
+                        // Get the list of items
+                    var ul = document.getElementById("myUL");
+                    var li = ul.getElementsByTagName('button');
+                    // Loop through all list items, and hide those that don't match the search query
+                    for (var i = 0; i < li.length; i++) {
+                            li[i].classList.remove("found");
+
+                    }
+
+                })
+            })
+
+
+            warehouseSelect.addEventListener('change', ()=>{
+                if(warehouseSelect.value == "0"){
+                    disableFields()
+                    return;
+                }
+
+                const selectedItemValue = warehouseSelect.value
+                enableFields()
+                warehouseSelect.disabled = true
+                html = ``
+                productInventory.map(prod=>{
+                    if(prod.WarehouseID == warehouseSelect.value){
+                        
+                        html += `
+                            <button type='button' class='btn btn-secondary rounded-0 productItemButton' data-warehouse='${JSON.stringify({"WarehouseID":prod.WarehouseID, "WarehouseName": prod.WarehouseName}) }'>${prod.Name}</button>
+                        `
+                    }
+
+                })
+
+                productContainer.innerHTML = html
+
+                //add button click event on product item button                                       
+            const productItemButton = document.getElementsByClassName('productItemButton')
+            
+            Array.from(productItemButton).forEach(item=>{
+                item.addEventListener('click', ()=>{
+                    const warehouse = JSON.parse(item.dataset.warehouse)
+
+                    const warehouseInput = document.querySelector('#warehouse')
+                    warehouseInput.value = warehouse.WarehouseName
+                    warehouseInput.dataset.warehouseid = warehouse.WarehouseID
+
+                    const productName = document.querySelector('#prodName')
+                    productName.value = item.textContent
+
+                    const product = document.querySelector('#product')
+                    product.value = item.textContent
+
+                        // Get the list of items
+                    var ul = document.getElementById("myUL");
+                    var li = ul.getElementsByTagName('button');
+                    // Loop through all list items, and hide those that don't match the search query
+                    for (var i = 0; i < li.length; i++) {
+                            li[i].classList.remove("found");
+
+                    }
+
+                })
+            })
+                })
+
+
+            const disableFields = ()=>{
+               
+                    prodName.disabled = true
+                    product.disabled = true
+                    quantity.disabled = true
+                    warehouse.disabled = true
+                 
+            }
+            const enableFields = ()=>{
+               
+                    prodName.disabled = false
+                    product.disabled = false
+                    quantity.disabled = false
+                    warehouse.disabled = false
+                 
+            }
+
+
+            
+            
+            disableFields()
+
+
+
         </script>
     </main>
     <footer class="py-4 bg-light mt-auto">

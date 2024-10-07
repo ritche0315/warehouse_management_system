@@ -9,7 +9,7 @@ class Customer extends BaseModel{
     }
 
     public function insert($data)
-    {
+    {   
         $this->db->insert('customers', $data);
     }
 

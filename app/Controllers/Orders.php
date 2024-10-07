@@ -8,6 +8,7 @@ use App\Models\Customer;
 use App\Models\Warehouse;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\Inventory;
 use App\Controllers\LastIssuedNo;
 
 
@@ -17,7 +18,7 @@ class Orders extends BaseController{
     protected $customer;
     protected $warehouse;
     protected $lastIssuedNo;
-    protected $product;
+    protected $inventory;
 
     public function __construct(){
         parent::__construct();
@@ -30,7 +31,7 @@ class Orders extends BaseController{
         $this->customer = new Customer();
         $this->warehouse = new Warehouse();
         $this->lastIssuedNo = new LastIssuedNo();
-        $this->product = new Product();
+        $this->inventory = new Inventory();
     }
 
     //view function
@@ -41,17 +42,39 @@ class Orders extends BaseController{
         $this->view->render('orders/index', compact('orders','title'));
     }
 
-    public function love(){
-        $title = 'Love';
-        $this->view->render('orders/love', compact('title'));
+    public function submit_order(){
+        
+        if(isset($_POST['data'])){
+            $data = json_decode($_POST['data']);
+
+
+            $orderDate = date('Y-m-d');
+            $totalAmount = 0;
+            $customerId = null;
+            $warehouseId = null;
+
+
+            $orders = $data; //orders
+
+            foreach($orders as $order){ // totalamount
+                $totalAmount += $order->total;
+            }
+
+
+            
+
+            return;
+        }
+
+
+        echo "failed";
     }
+
 
     //add function
     public function add(){
         $errors = [];
-
-        if(isset($_POST['submit'])){
-            
+        if(isset($_POST['data'])){
             //payload
             $product = (isset($_POST['product']) ? $_POST['product'] : null);
             $warehouse = (isset($_POST['warehouse']) ? $_POST['warehouse'] : null);
@@ -83,10 +106,11 @@ class Orders extends BaseController{
         //populate warehouse and product
         // $this->lastIssuedNo->generateOrderNumber();
         $issuedNo = $this->lastIssuedNo->generateOrderNumber();
-        $products = $this->product->getProducts();
+        $products = $this->inventory->getInventories();
         $customers = $this->customer->getCustomers();
+        $warehouses = $this->warehouse->getWarehouses(); 
         //render view
-        $this->view->render('orders/add', compact('errors', 'products','customers', 'issuedNo',  'title'));
+        $this->view->render('orders/add', compact('errors', 'products','customers', 'warehouses','issuedNo',  'title'));
     }
     // edit function''
     public function edit($id){
