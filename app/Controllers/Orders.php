@@ -103,14 +103,13 @@ class Orders extends BaseController{
 
 
         $title = 'Add Order';
-        //populate warehouse and product
-        // $this->lastIssuedNo->generateOrderNumber();
-        $issuedNo = $this->lastIssuedNo->generateOrderNumber();
+
         $products = $this->inventory->getInventories();
         $customers = $this->customer->getCustomers();
         $warehouses = $this->warehouse->getWarehouses(); 
+
         //render view
-        $this->view->render('orders/add', compact('errors', 'products','customers', 'warehouses','issuedNo',  'title'));
+        $this->view->render('orders/add', compact('errors', 'products','customers', 'warehouses',  'title'));
     }
     // edit function''
     public function edit($id){

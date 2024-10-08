@@ -38,13 +38,24 @@ use App\Helpers\Session;
                         </div>
                         <div class="row" id='orderEntry'>
                             <div class="col">
-                                <form class='mt-3 p-3 bg-light shadow-lg'>
+                                <form class='mt-3 p-3 bg-light shadow-lg' method='post'>
                                     <div class="row">
                                         <div class="col col-lg-3">
+                                            <h5 class='fw-light text-secondary mt-3'>Customer Information</h4>
+                                            <div class="control-group">
+                                                <select name="selectCustomer" id="selectCustomer" class='form-select ' onchange=''>
+                                                    <option value="0">Select Customer</option>
+                                                    <?php
+                                                        foreach($customers as $customer){
+                                                            echo "<option value='".$customer->CustomerID."'>".$customer->FirstName." ".$customer->LastName."</option>";
+                                                        }
+                                                    ?>
+                                                </select>
+                                            </div>
                                             <h5 class='fw-light text-secondary mt-3'>Product Information</h4>
                                             <div class="control-group">
                                                 <select name="selectProduct" id="selectProduct" class='form-select' onchange='selectProductOnChange()'>
-                                                  
+                                                 
                                                 </select>
                                             </div>
                                             <div class="control-group">
@@ -53,10 +64,10 @@ use App\Helpers\Session;
                                             </div>
                                             <div class="control-group">
                                                 <label for="quantity" class='control-label'>Quantity</label>
-                                                <input type="number" name='quantity' id='quantity' class='form-control' value='0'>
+                                                <input type="number" name='quantity' id='quantity' class='form-control' value='1'>
                                             </div>
                                             <div class="control-group">
-                                                <input type="submit" value="Add" class='btn btn-success mt-3'>
+                                                <input type="submit" value="Add" name='submit' class='btn btn-success mt-3'>
                                             </div>
 
                                         </div>
@@ -96,6 +107,11 @@ use App\Helpers\Session;
     
     var selectProductEl = document.querySelector('#selectProduct')
     var orderEntry = document.querySelector('#orderEntry')                                 
+    var prodName = document.querySelector('#prodname')
+    var quantity = document.querySelector('#quantity')
+
+
+
     window.onload= (()=>{ //initialize components
 
         //disabled new order button
@@ -132,6 +148,14 @@ use App\Helpers\Session;
 
 
     function selectProductOnChange(){
+        let products = <?php echo json_encode($products)?>
+
+        products.map(product=>{
+            if(selectProductEl.value == product.InventoryID) {
+                prodName.value = product.Name
+            }
+        
+        });
     }
 
     function populateProductOnSelectProduct(){
@@ -141,7 +165,7 @@ use App\Helpers\Session;
 
         products.map(product=>{
             if(product.WarehouseID == selectWarehouseEl.value){
-                html += `<option value='${product.InventoryID}'>${product.Name}</option>`
+                html += `<option value='${product.InventoryID}' data-product='${product.Name}'>${product.Name}</option>`
             }
         })
         
