@@ -12,21 +12,26 @@ class Order extends BaseModel{
 
     public function insert($data)
     {
-        $this->db->insert('products', $data);
+        $this->db->insert('orders', $data);
     }
 
     public function update($data, $where)
     {
-        $this->db->update('products', $data, $where);
+        $this->db->update('orders', $data, $where);
     }
 
     public function delete($where)
     {
-        $this->db->delete('products', $where);
+        $this->db->delete('orders', $where);
     }
 
     public function get_product($id){
-        $data = $this->db->select("* from products where ProductID = :id", [":id" => $id]);
+        $data = $this->db->select("* from orders where OrderID = :id", [":id" => $id]);
+        return (isset($data[0]) ? $data[0] : null);
+    }
+
+    public function get_last_inserted_id(){
+        $data = $this->db->select('LAST_INSERT_ID()');
         return (isset($data[0]) ? $data[0] : null);
     }
 }

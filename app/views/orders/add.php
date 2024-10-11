@@ -19,30 +19,35 @@ use App\Helpers\Session;
 
                 <div class="col">
                     <div class='container-fluid'>
-                        <div class="row">
-                            <div class="col col-lg-3">
-                                <select name="warehouse" id="warehouse" class='form-select' onchange='selectWarehouseOnChange()'>
-                                    <option value="0">Select Warehouse</option>
-                                    <?php 
-                                        foreach($warehouses as $warehouse){
-                                            echo "<option value='".$warehouse->WarehouseID."'>".$warehouse->Name."</option>";
-                                        }
-                                    
-                                    ?>
-                                </select>
-                            </div>
-                            <div class="col col-lg-3">
-                                <button id='btnNewOrder' class='btn btn-primary' onclick='newOrderBtnClicked()'><i class='fa fa-circle-plus'></i>&nbsp; New Order</button>
-                                <button id='btnCancelOrder' class='btn btn-danger' onclick='cancelBtnClicked()'><i class='fa fa-close'></i>&nbsp; Cancel</button>
-                            </div>
-                        </div>
-                        <div class="row" id='orderEntry'>
+                        
+                        <div class="row" >
                             <div class="col">
-                                <form class='mt-3 p-3 bg-light shadow-lg' method='post'>
+                                <form class='mt-3 p-3 bg-light shadow-lg' id='orderForm' method='post'>
                                     <div class="row">
                                         <div class="col col-lg-3">
-                                            <h5 class='fw-light text-secondary mt-3'>Customer Information</h4>
+                                            <select name="warehouse" id="warehouse" class='form-select' onchange='selectWarehouseOnChange()'>
+                                                <option value="0">Select Warehouse</option>
+                                                <?php 
+                                                    foreach($warehouses as $warehouse){
+                                                        echo "<option value='".$warehouse->WarehouseID."'>".$warehouse->Name."</option>";
+                                                    }
+                                                
+                                                ?>
+                                            </select>
+                                        </div>
+                                        <div class="col col-lg-3">
+                                            <button id='btnNewOrder' class='btn btn-primary' onclick='newOrderBtnClicked()'><i class='fa fa-circle-plus'></i>&nbsp; New Order</button>
+                                            <button id='btnCancelOrder' class='btn btn-danger' onclick='cancelBtnClicked()'><i class='fa fa-close'></i>&nbsp; Cancel</button>
+                                        </div>
+                                    </div>
+                                    <div class="row" id='orderEntry'>
+                                        <div class="col col-lg-3">
+                                        <div class="control-group">
+                                                <label for="warehouseID" class='control-label'>Warehouse ID</label>
+                                                <input type="text" name='warehouseID' id='warehouseID' class='form-control'>
+                                            </div>
                                             <div class="control-group">
+                                                <label for="selectCustomer" class='control-label'>Customer</label>
                                                 <select name="selectCustomer" id="selectCustomer" class='form-select ' onchange=''>
                                                     <option value="0">Select Customer</option>
                                                     <?php
@@ -52,24 +57,45 @@ use App\Helpers\Session;
                                                     ?>
                                                 </select>
                                             </div>
-                                            <h5 class='fw-light text-secondary mt-3'>Product Information</h4>
                                             <div class="control-group">
+                                                <label for="selectProduct" class='control-label'>Product</label>
                                                 <select name="selectProduct" id="selectProduct" class='form-select' onchange='selectProductOnChange()'>
                                                  
                                                 </select>
                                             </div>
+                                            
+                                            
+                                        </div>
+                                        <div class="col col-lg-3">
+
                                             <div class="control-group">
-                                                <label for="prodname" class='control-label'>Product</label>
+                                                <label for="prodname" class='control-label'>Product Name</label>
                                                 <input type="text" name='prodname' id='prodname' class='form-control'>
                                             </div>
+
                                             <div class="control-group">
                                                 <label for="quantity" class='control-label'>Quantity</label>
-                                                <input type="number" name='quantity' id='quantity' class='form-control' value='1'>
-                                            </div>
-                                            <div class="control-group">
-                                                <input type="submit" value="Add" name='submit' class='btn btn-success mt-3'>
+                                                <input type="number" name='quantity' id='quantity' class='form-control' value='1' onchange='quantityOnChange()'>
                                             </div>
 
+                                            <div class="control-group">
+                                                <label for="unitPrice" class='control-label'>Unit Price</label>
+                                                <input type="number" name='unitPrice' id='unitPrice' class='form-control' value='0'>
+                                            </div>
+
+                                            
+
+                                        </div>
+                                        <div class="col-12 col-lg-6">
+                                            <div class="control-group">
+                                                <label for="totalAmount" class='control-label'>Total Amount</label>
+                                                <input type="number" name='totalAmount' id='totalAmount' class='form-control' value='0'>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                             <div class="control-group">
+                                                <input type="submit" value="Submit" name='submit' class='btn btn-success mt-3'>
+                                            </div>
                                         </div>
                                     </div>
                                 </form>
@@ -109,9 +135,10 @@ use App\Helpers\Session;
     var orderEntry = document.querySelector('#orderEntry')                                 
     var prodName = document.querySelector('#prodname')
     var quantity = document.querySelector('#quantity')
-
-
-
+    var totalAmount = document.querySelector('#totalAmount')
+    var warehouseID = document.querySelector('#warehouseID')
+    var unitPrice = document.querySelector('#unitPrice')
+                                                        
     window.onload= (()=>{ //initialize components
 
         //disabled new order button
@@ -122,6 +149,7 @@ use App\Helpers\Session;
         orderEntry.style.display = "none"
     })()
 
+   
 
     function selectWarehouseOnChange(){
         if(selectWarehouseEl.value == "0"){
@@ -136,7 +164,7 @@ use App\Helpers\Session;
         btnCancelOrder.style.display = "";
         btnNewOrder.disabled = true
         selectWarehouseEl.disabled = true
-      
+        warehouseID.value = selectWarehouseEl.value
         orderEntry.style.display = ""
         populateProductOnSelectProduct()
 
@@ -153,6 +181,26 @@ use App\Helpers\Session;
         products.map(product=>{
             if(selectProductEl.value == product.InventoryID) {
                 prodName.value = product.Name
+                
+              
+                const qty = quantity.value;
+
+                unitPrice.value = product.UnitPrice
+                totalAmount.value = Number(product.UnitPrice * qty);
+            }
+        
+        });
+    }
+
+    function quantityOnChange(){
+        let products = <?php echo json_encode($products)?>
+
+        products.map(product=>{
+            if(selectProductEl.value == product.InventoryID) {
+
+                const unitPrice = product.UnitPrice
+                const qty = quantity.value;
+                totalAmount.value = Number(unitPrice * qty);
             }
         
         });

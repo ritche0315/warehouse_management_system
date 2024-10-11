@@ -7,6 +7,7 @@ use App\Helpers\Url;
 use App\Models\Customer;
 use App\Models\Warehouse;
 use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\Inventory;
 use App\Controllers\LastIssuedNo;
@@ -19,7 +20,7 @@ class Orders extends BaseController{
     protected $warehouse;
     protected $lastIssuedNo;
     protected $inventory;
-
+    
     public function __construct(){
         parent::__construct();
 
@@ -28,6 +29,7 @@ class Orders extends BaseController{
         // }
 
         $this->order = new Order();
+        $this->orderitem = new OrderItem();
         $this->customer = new Customer();
         $this->warehouse = new Warehouse();
         $this->lastIssuedNo = new LastIssuedNo();
@@ -37,68 +39,67 @@ class Orders extends BaseController{
     //view function
     public function index(){
         $orders = $this->order->get_orders();
-
         $title = 'Order';
         $this->view->render('orders/index', compact('orders','title'));
-    }
-
-    public function submit_order(){
-        
-        if(isset($_POST['data'])){
-            $data = json_decode($_POST['data']);
-
-
-            $orderDate = date('Y-m-d');
-            $totalAmount = 0;
-            $customerId = null;
-            $warehouseId = null;
-
-
-            $orders = $data; //orders
-
-            foreach($orders as $order){ // totalamount
-                $totalAmount += $order->total;
-            }
-
-
-            
-
-            return;
-        }
-
-
-        echo "failed";
     }
 
 
     //add function
     public function add(){
         $errors = [];
-        if(isset($_POST['data'])){
+        if(isset($_POST['submit'])){
             //payload
-            $product = (isset($_POST['product']) ? $_POST['product'] : null);
-            $warehouse = (isset($_POST['warehouse']) ? $_POST['warehouse'] : null);
-            $quantity = (isset($_POST['quantity']) ? $_POST['quantity']: null);
-            
+        
+            $customer = (isset($_POST['selectCustomer']) ? $_POST['selectCustomer'] : null);
+            $product = (isset($_POST['selectProduct']) ? $_POST['selectProduct'] : null);
+            $quantity = (isset($_POST['quantity']) ? $_POST['quantity'] : null);
+            $totalAmount = (isset($_POST['totalAmount']) ? $_POST['totalAmount']: null);
+            $warehouseID = (isset($_POST['warehouseID']) ? $_POST['warehouseID']: null);
+            $unitPrice = (isset($_POST['unitPrice']) ? $_POST['unitPrice']: null);
+            $orderDate = date('Y-m-d');
 
             //input validation
             if($product == 0) $errors[] = "Please select a product";
 
-            if($warehouse == 0) $errors[] = "Please select a warehouse";
+            if($customer == 0) $errors[] = "Please select a customer";
         
             //check errors
             if(count($errors) == 0){
                 // no errors exec.
+
                 $data = [
-                    'WarehouseID'=> $warehouse,
-                    'ProductID'=>$product,
-                    'quantity'=>$quantity,
+                    'CustomerID'=>$customer,
+                    'OrderDate'=>$orderDate,
+                    'WarehouseID'=>$warehouseID,
+                    'TotalAmount'=>$totalAmount
                 ];
                 
-                $this->inventory->insert($data);
-                Session::set('success', 'Inventory added');
-                Url::redirect('/inventory');
+                $this->order->insert($data);
+
+                $orderId = $this->order->get_last_inserted_id();
+                
+
+                //get product id from inventory
+                $inventoryId = $product;
+                $inventoryResult = $this->inventory->get_inventory($inventoryId);
+                 
+                $productId = $inventoryResult->ProductID;
+            
+                
+                $orderitemdata = [
+                    'OrderID'=> $orderId->{'LAST_INSERT_ID()'},
+                    'ProductID'=> $productId, //
+                    'UnitPrice'=> $unitPrice,
+                    'Quantity'=> $quantity,
+                    'TotalPrice'=> $totalAmount,
+                ];
+                
+                $this->orderitem->insert($orderitemdata);
+
+                Session::set('success', 'Order added');
+                Url::redirect('/orders');
             }
+           
         }
 
 

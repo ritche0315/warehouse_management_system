@@ -23,6 +23,7 @@ include(APPDIR.'views/layouts/sbnav.php');
                            <th>Warehouse</th>
                            <th>Customer</th>
                            <th>Total Amount</th>
+                           <th>Action</th>
                         </tr>
                         <?php foreach($orders as $row) { ?>
                         <tr>
@@ -32,8 +33,10 @@ include(APPDIR.'views/layouts/sbnav.php');
                             <td><?=htmlentities($row->FirstName." ".$row->LastName);?></td>
                             <td><?=htmlentities($row->TotalAmount);?></td>
                             <td>
-                                <a href="/products/edit/<?=$row->OrderID;?>" class="btn btn-xs btn-warning">Edit</a>
-                                <a href="javascript:del('<?=$row->OrderID;?>','<?=$row->OrderID;?>')" class="btn btn-xs btn-danger">Delete</a>
+                                <button type='button' class='btn btn-xs btn-success' data-orderid='<?=$row->OrderID;?>' id='btnView'><i class='fa fa-eye'></i></button>
+                                <?php include(APPDIR.'views/modals/orderitem.php');?>
+                                <a href="/products/edit/<?=$row->OrderID;?>" class="btn btn-xs btn-warning text-light"><i class='fa fa-edit'></i></a>
+                                <a href="javascript:del('<?=$row->OrderID;?>','<?=$row->OrderID;?>')" class="btn btn-xs btn-danger"><i class='fa fa-trash'></i></a>
                             </td>
                         </tr>
                         <?php } ?>
@@ -65,6 +68,22 @@ include(APPDIR.'views/layouts/sbnav.php');
         </footer>
     </div>
 </div>
+<script>
 
+    const btnView = document.querySelector('#btnView')
+
+
+    window.onload =(()=>{
+
+        btnViewCliked()
+    })();
+
+    function btnViewCliked(){
+        btnView.addEventListener('click',()=>{
+            const modal = new bootstrap.Modal('#orderItemModal', null)
+            modal.show()
+        })
+    }
+</script>
 
 <?php include(APPDIR.'views/layouts/footer.php');?>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3307
--- Generation Time: Oct 03, 2024 at 07:37 AM
+-- Generation Time: Oct 12, 2024 at 01:35 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -57,6 +57,17 @@ CREATE TABLE `inventory` (
   `Quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `inventory`
+--
+
+INSERT INTO `inventory` (`InventoryID`, `WarehouseID`, `ProductID`, `Quantity`) VALUES
+(3, 1, 7, 100),
+(4, 1, 8, 100),
+(5, 2, 10, 100),
+(6, 1, 13, 100),
+(7, 1, 7, 5);
+
 -- --------------------------------------------------------
 
 --
@@ -68,13 +79,6 @@ CREATE TABLE `lastissuedno` (
   `YearIssued` int(11) NOT NULL,
   `OrderNo` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `lastissuedno`
---
-
-INSERT INTO `lastissuedno` (`id`, `YearIssued`, `OrderNo`) VALUES
-(5, 2024, 2);
 
 -- --------------------------------------------------------
 
@@ -91,6 +95,13 @@ CREATE TABLE `orderitem` (
   `TotalPrice` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `orderitem`
+--
+
+INSERT INTO `orderitem` (`OrderItemID`, `OrderID`, `ProductID`, `UnitPrice`, `Quantity`, `TotalPrice`) VALUES
+(3, 22, 7, 7500, 1, 7500);
+
 -- --------------------------------------------------------
 
 --
@@ -104,6 +115,13 @@ CREATE TABLE `orders` (
   `WarehouseID` int(10) NOT NULL,
   `TotalAmount` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`OrderID`, `CustomerID`, `OrderDate`, `WarehouseID`, `TotalAmount`) VALUES
+(22, 1, '2024-10-09', 1, 7500);
 
 -- --------------------------------------------------------
 
@@ -172,7 +190,8 @@ CREATE TABLE `warehouse` (
 --
 
 INSERT INTO `warehouse` (`WarehouseID`, `Name`, `Location`) VALUES
-(1, 'Stock Smart', 'Toril');
+(1, 'Warehouse 1', 'Toril'),
+(2, 'Warehouse 2', 'Matina');
 
 --
 -- Indexes for dumped tables
@@ -246,7 +265,7 @@ ALTER TABLE `customers`
 -- AUTO_INCREMENT for table `inventory`
 --
 ALTER TABLE `inventory`
-  MODIFY `InventoryID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `InventoryID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `lastissuedno`
@@ -258,13 +277,13 @@ ALTER TABLE `lastissuedno`
 -- AUTO_INCREMENT for table `orderitem`
 --
 ALTER TABLE `orderitem`
-  MODIFY `OrderItemID` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `OrderItemID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `OrderID` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `OrderID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -282,7 +301,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `warehouse`
 --
 ALTER TABLE `warehouse`
-  MODIFY `WarehouseID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `WarehouseID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
