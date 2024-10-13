@@ -23,6 +23,7 @@ include(APPDIR.'views/layouts/sbnav.php');
                             <th>Name</th>
                             <th>Description</th>
                             <th>UnitPrice</th>
+                            <th>Supplier</th>
                             <th>Action</th>
                         </tr>
                         <?php foreach($products as $row) { ?>
@@ -32,9 +33,10 @@ include(APPDIR.'views/layouts/sbnav.php');
                             <td><?=htmlentities($row->Name);?></td>
                             <td><?=htmlentities($row->Description);?></td>
                             <td><?=htmlentities($row->UnitPrice);?></td>
+                            <td><?=htmlentities($row->SupplierName);?></td>
                             <td>
-                                <a href="/products/edit/<?=$row->ProductID;?>" class="btn btn-xs btn-warning">Edit</a>
-                                <a href="javascript:del('<?=$row->ProductID;?>','<?=$row->Name;?>')" class="btn btn-xs btn-danger">Delete</a>
+                                <a href="/products/edit/<?=$row->ProductID;?>" class="btn btn-xs btn-warning"><i class='fa fa-edit text-light'></i></a>
+                                <a href="javascript:del('<?=$row->ProductID;?>','<?=$row->Name;?>')" class="btn btn-xs btn-danger"><i class='fa fa-trash'></i></a>
                             </td>
                         </tr>
                         <?php } ?>

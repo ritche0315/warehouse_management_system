@@ -5,7 +5,9 @@ use System\BaseModel;
 class Product extends BaseModel{
 
     public function getProducts(){
-        return $this->db->select('* FROM products');
+        return $this->db->select('products.ProductID, products.SKU, products.Name, 
+        products.Description, products.UnitPrice, supplier.SupplierID, supplier.Name 
+        as "SupplierName" FROM products INNER JOIN supplier on products.SupplierID = supplier.SupplierID');
     }
 
     public function insert($data)

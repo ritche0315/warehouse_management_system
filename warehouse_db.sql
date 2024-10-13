@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3307
--- Generation Time: Oct 12, 2024 at 01:35 AM
+-- Generation Time: Oct 13, 2024 at 05:00 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -100,7 +100,8 @@ CREATE TABLE `orderitem` (
 --
 
 INSERT INTO `orderitem` (`OrderItemID`, `OrderID`, `ProductID`, `UnitPrice`, `Quantity`, `TotalPrice`) VALUES
-(3, 22, 7, 7500, 1, 7500);
+(3, 22, 7, 7500, 1, 7500),
+(4, 23, 7, 7500, 1, 7500);
 
 -- --------------------------------------------------------
 
@@ -121,7 +122,8 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`OrderID`, `CustomerID`, `OrderDate`, `WarehouseID`, `TotalAmount`) VALUES
-(22, 1, '2024-10-09', 1, 7500);
+(22, 1, '2024-10-09', 1, 7500),
+(23, 3, '2024-10-13', 1, 7500);
 
 -- --------------------------------------------------------
 
@@ -134,22 +136,44 @@ CREATE TABLE `products` (
   `SKU` varchar(50) NOT NULL,
   `Name` varchar(100) NOT NULL,
   `Description` varchar(100) NOT NULL,
-  `UnitPrice` double NOT NULL
+  `UnitPrice` double NOT NULL,
+  `SupplierID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`ProductID`, `SKU`, `Name`, `Description`, `UnitPrice`) VALUES
-(7, 'PROD0001', 'Ryzen 5 3400G', '4cores 8threads 3.90ghz speed APU', 7500),
-(8, 'PROD0002', 'B450 Biostar Motherboard', 'DDR4 2slots  M.2 Slot', 4500),
-(9, 'PROD0003', 'Ripjaws Ram', '16gb DDR4 3200mhz', 3200),
-(10, 'PROD0004', 'INPLAY 450w PSU', '80+ bronze 450watts Power supply ', 1500),
-(11, 'PROD0005', 'Ramsta M.2 SSD', 'M.2 SSD 128gb', 1000),
-(12, 'PROD0006', 'LED LG Monitor 75hz', 'LG Monitor 75hz, 21 inches LED', 4950),
-(13, 'PROD0007', 'INPLAY Tempered Glass Casing', 'Tempered Glass Casing', 1150),
-(14, 'PROD0007', 'Fantech X9 Thor Gaming mouse', '2m clicks. LED light', 650);
+INSERT INTO `products` (`ProductID`, `SKU`, `Name`, `Description`, `UnitPrice`, `SupplierID`) VALUES
+(7, 'PROD0001', 'Ryzen 5 3400G', '4cores 8threads 3.90ghz speed APU', 7500, 2),
+(8, 'PROD0002', 'B450 Biostar Motherboard', 'DDR4 2slots  M.2 Slot', 4500, 2),
+(9, 'PROD0003', 'Ripjaws Ram', '16gb DDR4 3200mhz', 3200, 1),
+(10, 'PROD0004', 'INPLAY 450w PSU', '80+ bronze 450watts Power supply ', 1500, 1),
+(11, 'PROD0005', 'Ramsta M.2 SSD', 'M.2 SSD 128gb', 1000, 1),
+(12, 'PROD0006', 'LED LG Monitor 75hz', 'LG Monitor 75hz, 21 inches LED', 4950, 1),
+(13, 'PROD0007', 'INPLAY Tempered Glass Casing', 'Tempered Glass Casing', 1150, 1),
+(14, 'PROD0007', 'Fantech X9 Thor Gaming mouse', '2m clicks. LED light', 650, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `supplier`
+--
+
+CREATE TABLE `supplier` (
+  `SupplierID` int(11) NOT NULL,
+  `Name` varchar(255) NOT NULL,
+  `Address` varchar(255) NOT NULL,
+  `Phone` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `supplier`
+--
+
+INSERT INTO `supplier` (`SupplierID`, `Name`, `Address`, `Phone`) VALUES
+(1, 'ABC COMPANY', 'TORIL', '87898'),
+(2, 'XYZ COMPANY', 'TORIL', '321');
 
 -- --------------------------------------------------------
 
@@ -237,7 +261,14 @@ ALTER TABLE `orders`
 -- Indexes for table `products`
 --
 ALTER TABLE `products`
-  ADD PRIMARY KEY (`ProductID`);
+  ADD PRIMARY KEY (`ProductID`),
+  ADD KEY `SupplierID` (`SupplierID`);
+
+--
+-- Indexes for table `supplier`
+--
+ALTER TABLE `supplier`
+  ADD PRIMARY KEY (`SupplierID`);
 
 --
 -- Indexes for table `users`
@@ -277,19 +308,25 @@ ALTER TABLE `lastissuedno`
 -- AUTO_INCREMENT for table `orderitem`
 --
 ALTER TABLE `orderitem`
-  MODIFY `OrderItemID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `OrderItemID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `OrderID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `OrderID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `ProductID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `ProductID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- AUTO_INCREMENT for table `supplier`
+--
+ALTER TABLE `supplier`
+  MODIFY `SupplierID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -327,6 +364,12 @@ ALTER TABLE `orderitem`
 ALTER TABLE `orders`
   ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`CustomerID`) REFERENCES `customers` (`CustomerID`),
   ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`WarehouseID`) REFERENCES `warehouse` (`WarehouseID`);
+
+--
+-- Constraints for table `products`
+--
+ALTER TABLE `products`
+  ADD CONSTRAINT `products_ibfk_1` FOREIGN KEY (`SupplierID`) REFERENCES `supplier` (`SupplierID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

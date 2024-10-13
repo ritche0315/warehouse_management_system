@@ -39,8 +39,8 @@ include(APPDIR.'views/layouts/sbnav.php');
                         <td><?=htmlentities($row->UnitPrice);?></td>
                         <td><?=htmlentities($row->Quantity);?></td>
                         <td>
-                            <a href="/inventory/edit/<?=$row->InventoryID;?>" class="btn btn-xs btn-warning">Edit</a>
-                            <a href="javascript:del('<?=$row->InventoryID;?>','<?=$row->InventoryID;?>')" class="btn btn-xs btn-danger">Delete</a>
+                            <a href="/inventory/edit/<?=$row->InventoryID;?>" class="btn btn-xs btn-warning"><i class='fa fa-edit text-light'></i></a>
+                            <a href="javascript:del('<?=$row->InventoryID;?>','<?=$row->InventoryID;?>')" class="btn btn-xs btn-danger"><i class='fa fa-trash'></i></a>
                         </td>
                     </tr>
                     <?php } ?>

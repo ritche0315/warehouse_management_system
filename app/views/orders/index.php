@@ -33,7 +33,7 @@ include(APPDIR.'views/layouts/sbnav.php');
                             <td><?=htmlentities($row->FirstName." ".$row->LastName);?></td>
                             <td><?=htmlentities($row->TotalAmount);?></td>
                             <td>
-                                <button type='button' class='btn btn-xs btn-success' data-orderid='<?=$row->OrderID;?>' id='btnView'><i class='fa fa-eye'></i></button>
+                                <button type='button' class='btn btn-xs btn-success btnView' data-orderid='<?=$row->OrderID;?>' id='btnView'><i class='fa fa-eye'></i></button>
                                 <?php include(APPDIR.'views/modals/orderitem.php');?>
                                 <a href="/products/edit/<?=$row->OrderID;?>" class="btn btn-xs btn-warning text-light"><i class='fa fa-edit'></i></a>
                                 <a href="javascript:del('<?=$row->OrderID;?>','<?=$row->OrderID;?>')" class="btn btn-xs btn-danger"><i class='fa fa-trash'></i></a>
@@ -70,7 +70,7 @@ include(APPDIR.'views/layouts/sbnav.php');
 </div>
 <script>
 
-    const btnView = document.querySelector('#btnView')
+    const btnViews = document.getElementsByClassName('btnView')
 
 
     window.onload =(()=>{
@@ -79,9 +79,12 @@ include(APPDIR.'views/layouts/sbnav.php');
     })();
 
     function btnViewCliked(){
-        btnView.addEventListener('click',()=>{
-            const modal = new bootstrap.Modal('#orderItemModal', null)
-            modal.show()
+        Array.from(btnViews).forEach(btn=>{
+            btn.addEventListener('click',()=>{
+                const modal = new bootstrap.Modal('#orderItemModal', null)
+                modal.show()
+            })
+
         })
     }
 </script>

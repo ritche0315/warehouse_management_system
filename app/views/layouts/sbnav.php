@@ -44,6 +44,7 @@
                             <div class="collapse" id="pagesCollapseInventory" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="/inventory/add">Add Inventory</a>
+                                    <a class="nav-link" href="/inventory/adjustment">Inventory Adjustment</a>
                                     <a class="nav-link" href="/inventory">Inventory Master</a>
                                 </nav>
                             </div>
@@ -75,6 +76,16 @@
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="/customers/add">Add Customer</a>
                                     <a class="nav-link" href="/customers">Customer Master</a>
+                                </nav>
+                            </div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseSupplier" aria-expanded="false" aria-controls="pagesCollapseAuth">
+                                Supplier
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="pagesCollapseSupplier" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="/supplier/add">Add Supplier</a>
+                                    <a class="nav-link" href="/supplier">Supplier Master</a>
                                 </nav>
                             </div>
                             <!-- <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">

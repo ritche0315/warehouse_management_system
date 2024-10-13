@@ -29,6 +29,21 @@ include(APPDIR.'views/layouts/sbnav.php');
                 <input class="form-control" id="name" type="text" name="name" value="<?=$product->Name;?>" required  />
             </div>
 
+            <div class="control-group">
+                <label for="supplier" class='control-label mt-2'>Supplier</label>
+                <select name="supplier" id="supplier" class='form-select'>
+                    <option value="0">Select Supplier</option>
+                    <?php
+                        foreach($suppliers as $supplier){
+                            if($product->SupplierID == $supplier->SupplierID){
+                                echo "<option value='".$supplier->SupplierID."' selected>".$supplier->Name."</option>";
+                            }else{
+                                echo "<option value='".$supplier->SupplierID."'>".$supplier->Name."</option>";
+                            }
+                        }
+                    ?>
+                </select>
+            </div>
             
 
         </div>

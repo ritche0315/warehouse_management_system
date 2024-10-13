@@ -5,11 +5,13 @@ use System\BaseController;
 use App\Helpers\Session;
 use App\Helpers\Url;
 use App\Models\Product;
+use App\Models\Supplier;
 
 
 class Products extends BaseController{
 
     protected $product;
+    protected $supplier;
 
     public function __construct(){
         parent::__construct();
@@ -19,6 +21,7 @@ class Products extends BaseController{
         // }
 
         $this->product = new Product();
+        $this->supplier = new Supplier();
     }
 
     //view function
@@ -40,10 +43,15 @@ class Products extends BaseController{
             $name = (isset($_POST['name']) ? $_POST['name'] : null);
             $description = (isset($_POST['description']) ? $_POST['description'] : null);
             $unitPrice = (isset($_POST['unitPrice']) ? $_POST['unitPrice'] : null);
+            $supplier = (isset($_POST['supplier']) ? $_POST['supplier'] : null);
 
             //input validation
             if(!is_numeric($unitPrice)){
                 $errors[] = "Unit Price must be a numeric value";
+            }
+
+            if($supplier == "0"){
+                $errors[] = "Supplier is required.";
             }
 
             //check errors
@@ -52,7 +60,8 @@ class Products extends BaseController{
                     'SKU'=> $sku,
                     'Name'=>$name,
                     'Description'=>$description,
-                    'UnitPrice'=> $unitPrice
+                    'UnitPrice'=> $unitPrice,
+                    'SupplierID'=> $supplier
                 ];
                 
                 $this->product->insert($data);
@@ -63,8 +72,9 @@ class Products extends BaseController{
 
 
         $title = 'Add Product';
+        $suppliers = $this->supplier->getSuppliers();
         //render view
-        $this->view->render('products/add', compact('errors', 'title'));
+        $this->view->render('products/add', compact('errors','suppliers', 'title'));
     }
     // edit function
     public function edit($id){
@@ -91,6 +101,7 @@ class Products extends BaseController{
             $name = (isset($_POST['name']) ? $_POST['name'] : null);
             $description = (isset($_POST['description']) ? $_POST['description'] : null);
             $unitPrice = (isset($_POST['unitPrice']) ? $_POST['unitPrice'] : null);
+            $supplier = (isset($_POST['supplier']) ? $_POST['supplier'] : null);
 
             
             if (count($errors) == 0) {
@@ -99,7 +110,8 @@ class Products extends BaseController{
                     'SKU'=> $sku,
                     'Name'=>$name,
                     'Description'=>$description,
-                    'UnitPrice'=> $unitPrice
+                    'UnitPrice'=> $unitPrice,
+                    'SupplierID'=> $supplier
                 ];
 
                 $where = ['ProductID' => $id];
@@ -114,8 +126,9 @@ class Products extends BaseController{
 
         }
 
+        $suppliers = $this->supplier->getSuppliers();
         $title = 'Edit Product';
-        $this->view->render('products/edit', compact('product', 'errors', 'title'));
+        $this->view->render('products/edit', compact('product', 'suppliers','errors', 'title'));
     }
     public function delete($id){
         if (! is_numeric($id)) {

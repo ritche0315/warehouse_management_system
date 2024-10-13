@@ -132,6 +132,34 @@ class Inventory extends BaseController{
 
         $this->view->render('inventory/edit', compact('warehouses','products', 'inventory','errors', 'title'));
     }
+
+    //adjustment
+
+    public function adjustment(){
+
+        $errors = [];
+
+        if (isset($_POST['submit'])) {
+
+
+            //input validation
+            if($product == 0) $errors[] = "Please select a product";
+
+            if($warehouse == 0) $errors[] = "Please select a warehouse";
+            
+            if (count($errors) == 0) {
+
+
+            }
+
+        }
+
+        $title = 'Inventory Adjustment';
+        //populate inventory
+        $products = $this->inventory->getInventories();
+
+        $this->view->render('inventory/adjustment', compact('products','errors', 'title'));
+    }
     public function delete($id){
         if (! is_numeric($id)) {
             Url::redirect('/inventory');
