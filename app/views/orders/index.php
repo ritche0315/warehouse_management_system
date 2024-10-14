@@ -71,6 +71,8 @@ include(APPDIR.'views/layouts/sbnav.php');
 <script>
 
     const btnViews = document.getElementsByClassName('btnView')
+    
+
 
 
     window.onload =(()=>{
@@ -83,6 +85,27 @@ include(APPDIR.'views/layouts/sbnav.php');
             btn.addEventListener('click',()=>{
                 const modal = new bootstrap.Modal('#orderItemModal', null)
                 modal.show()
+
+                const orderidEl = document.querySelector('#orderid')
+                const orderItemProdName = document.querySelector('#orderItemProdName')
+                const orderItemUnitPrice = document.querySelector('#orderItemUnitPrice')
+                const orderItemQty = document.querySelector('#orderItemQty')
+                const orderItemTotalPrice = document.querySelector('#orderItemTotalPrice')
+
+                const orderid = btn.dataset.orderid
+
+
+                fetch(`/orderitem/view_orderitem/${orderid}`)
+                .then(response => response.json())
+                .then(orderitem =>{
+                    orderidEl.textContent = orderitem.OrderID
+                    orderItemProdName.textContent = orderitem.Name
+                    orderItemUnitPrice.textContent = orderitem.UnitPrice
+                    orderItemQty.textContent = orderitem.Quantity
+                    orderItemTotalPrice.textContent = orderitem.TotalPrice
+                })
+                .catch(err=> console.log(err))
+                
             })
 
         })

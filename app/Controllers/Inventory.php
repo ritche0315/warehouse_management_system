@@ -140,16 +140,29 @@ class Inventory extends BaseController{
         $errors = [];
 
         if (isset($_POST['submit'])) {
-
+            
+            $product = (isset($_POST['product']) ? $_POST['product'] : null);
+            $currentQuantity = (isset($_POST['currentQuantity']) ? $_POST['currentQuantity'] : null);
+            $quantity = (isset($_POST['quantity']) ? $_POST['quantity']: null);
 
             //input validation
             if($product == 0) $errors[] = "Please select a product";
 
-            if($warehouse == 0) $errors[] = "Please select a warehouse";
             
             if (count($errors) == 0) {
 
+                $totalQuantity = (int)$quantity + (int)$currentQuantity;
+                $data = [
+                    'quantity'=> $totalQuantity,
+                ];
 
+                $where = ['ProductID' => $product];
+
+                $this->inventory->update($data, $where);
+
+                Session::set('success', 'Inventory updated');
+
+                Url::redirect('/inventory');
             }
 
         }

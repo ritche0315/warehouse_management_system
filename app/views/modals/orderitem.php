@@ -11,7 +11,8 @@
       <div class="modal-body">
           <div class="card">
             <div class="card-header">
-                Order ID:
+                <label for="orderid" class='control-label'>Order ID:</label>
+                <label for="orderid" class='control-label' id='orderid'></label>
             </div>
             <div class="card-body">
                 <div class="row">

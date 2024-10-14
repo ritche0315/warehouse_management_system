@@ -23,8 +23,11 @@ class OrderItem extends BaseModel{
         $this->db->delete('orderitem', $where);
     }
 
-    public function get_product($id){
-        $data = $this->db->select("* from orderitem where OrderID = :id", [":id" => $id]);
+    public function get_orderitem($id){
+        $data = $this->db->select("products.Name, orderitem.OrderID, orderitem.UnitPrice, 
+        orderitem.Quantity, orderitem.TotalPrice from orderitem INNER JOIN products ON 
+        orderitem.ProductID = products.ProductID 
+        where orderitem.OrderID = :id", [":id" => $id]);
         return (isset($data[0]) ? $data[0] : null);
     }
 }
