@@ -23,7 +23,7 @@ class Supplier extends BaseModel{
         $this->db->delete('supplier', $where);
     }
 
-    public function get_product($id){
+    public function get_supplier($id){
         $data = $this->db->select("* from supplier where SupplierID = :id", [":id" => $id]);
         return (isset($data[0]) ? $data[0] : null);
     }

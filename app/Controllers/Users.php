@@ -13,9 +13,9 @@ class Users extends BaseController{
     public function __construct(){
         parent::__construct();
 
-        if (! Session::get('logged_in')) {
-            Url::redirect('/admin/login');
-        }
+        // if (! Session::get('logged_in')) {
+        //     Url::redirect('/admin/login');
+        // }
 
         $this->user = new User();
     }
@@ -161,7 +161,7 @@ class Users extends BaseController{
 
         $where = ['id' => $user->id];
 
-        //$this->user->delete($where);
+        $this->user->delete($where);
 
         Session::set('success', 'User deleted');
 

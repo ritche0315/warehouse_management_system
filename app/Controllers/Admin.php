@@ -103,12 +103,12 @@ class Admin extends BaseController{
             
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                 $mail->Port = 587;
-                $mail->setFrom($config['SEND_FROM'], $config['SEND_FROM_NAME']);
+                // $mail->setFrom($config['SEND_FROM'], $config['SEND_FROM_NAME']);
                 $mail->addAddress($email);
-                $mail->addReplyTo($config['REPLY_TO'], $config['REPLY_TO_NAME']);
+                // $mail->addReplyTo($config['REPLY_TO'], $config['REPLY_TO_NAME']);
 
                 $mail->isHTML(true);
-                $mail->Subject = "Reset you account";
+                $mail->Subject = "Reset your account";
                 $mail->Body    = "<p>To change your password please click <a href='http://localhost:8000/admin/change_password/$token'>this link</a></p>";
                 $mail->AltBody = "To change your password please go to this address: http://localhost:8000/admin/change_password/$token";
                 

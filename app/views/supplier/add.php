@@ -8,9 +8,9 @@ include(APPDIR.'views/layouts/sbnav.php');
     <main>
         <div class="container-fluid px-4">
             <?php include(APPDIR.'views/layouts/errors.php'); ?>
-            <h1 class="mt-4">Edit User</h1>
+            <h1 class="mt-4">Add Supplier</h1>
             <ol class="breadcrumb mb-4">
-                    <li class="breadcrumb-item active">Edit user form</li>
+                    <li class="breadcrumb-item active">Add supplier form</li>
                 </ol>
                 
                 <form method="post">
@@ -20,28 +20,25 @@ include(APPDIR.'views/layouts/sbnav.php');
         <div class="col-md-6">
 
             <div class="control-group">
-                <label class="control-label" for="username">Username</label>
-                <input class="form-control" id="username" type="text" name="username" value="<?= $user->username ?>" required  />
+                <label class="control-label" for="name">Name</label>
+                <input class="form-control" id="name" type="text" name="name" value="<?=(isset($_POST['name']) ? $_POST['name'] : '');?>" required  />
+            </div>
+
+            <div class="control-group">
+                <label for="address" class='control-label mt-2'>Address</label>
+                <input class='form-control' type="text" name="address" id="address" value="<?=(isset($_POST['address']) ? $_POST['address'] : '');?>" required>
             </div>
             
-            <div class="control-group">
-                <label for="email" class="control-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" value="<?= $user->email ?>" required/>
-            </div>
 
         </div>
 
         <div class="col-md-6">
 
             <div class="control-group">
-                <label for="password" class='control-label'>Password</label>
-                <input class='form-control' type="password" name="password" id="password" value="" required>
+                <label for="phone" class="control-label">Phone</label>
+                <input type="text" class="form-control" id="phone" name="phone" value="<?= (isset($_POST['phone']) ? $_POST['phone'] : '');?>" required/>
             </div>
 
-            <div class="control-group">
-                <label for="password_confirm" class='control-label'>Confirm Password</label>
-                <input class='form-control' type="password" name="password_confirm" id="password_confirm" value="" required>
-            </div>
 
         </div>
 

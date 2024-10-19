@@ -32,8 +32,9 @@ class Config{
     public static function getMailProps(){
         return [
             'MAILHOST'=>'smtp.gmail.com',
-            'USERNAME'=>'rcheetv0315@gmail.com',
-            'PASSWORD'=>'zuwcmtqqgjtcxomc',
+            'USERNAME'=>'ritche2000@gmail.com',
+            'PASSWORD'=>'jddn sfst joez bqrt',
+
             'SEND_FROM'=>'mitsuki0315@proton.me',
             'SEND_FROM_NAME'=>'Secure-Password-Manager',
             'REPLY_TO'=>'mitsuki0315@proton.me',
