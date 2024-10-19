@@ -25,7 +25,7 @@ class Order extends BaseModel{
         $this->db->delete('orders', $where);
     }
 
-    public function get_product($id){
+    public function get_order($id){
         $data = $this->db->select("* from orders where OrderID = :id", [":id" => $id]);
         return (isset($data[0]) ? $data[0] : null);
     }

@@ -35,7 +35,7 @@ include(APPDIR.'views/layouts/sbnav.php');
                             <td>
                                 <button type='button' class='btn btn-xs btn-success btnView' data-orderid='<?=$row->OrderID;?>' id='btnView'><i class='fa fa-eye'></i></button>
                                 <?php include(APPDIR.'views/modals/orderitem.php');?>
-                                <a href="/products/edit/<?=$row->OrderID;?>" class="btn btn-xs btn-warning text-light"><i class='fa fa-edit'></i></a>
+                                <a href="/orders/edit/<?=$row->OrderID;?>" class="btn btn-xs btn-warning text-light"><i class='fa fa-edit'></i></a>
                                 <a href="javascript:del('<?=$row->OrderID;?>','<?=$row->OrderID;?>')" class="btn btn-xs btn-danger"><i class='fa fa-trash'></i></a>
                             </td>
                         </tr>
@@ -46,7 +46,7 @@ include(APPDIR.'views/layouts/sbnav.php');
                     <script language="JavaScript" type="text/javascript">
                     function del(id, title) {
                         if (confirm("Are you sure you want to delete '" + title + "'?")) {
-                            window.location.href = 'orders/delete/' + id;
+                            window.location.href = '/orders/delete/' + id;
                         }
                     }
                     </script>

@@ -56,7 +56,7 @@ class Orders extends BaseController{
             $totalAmount = (isset($_POST['totalAmount']) ? $_POST['totalAmount']: null);
             $warehouseID = (isset($_POST['warehouseID']) ? $_POST['warehouseID']: null);
             $unitPrice = (isset($_POST['unitPrice']) ? $_POST['unitPrice']: null);
-            $orderDate = date('Y-m-d');
+            $orderDate = (isset($_POST['orderdate']) ? $_POST['orderdate']: null);
 
             //input validation
             if($product == 0) $errors[] = "Please select a product";
@@ -96,6 +96,16 @@ class Orders extends BaseController{
                 
                 $this->orderitem->insert($orderitemdata);
 
+
+                //update inventory
+                $where = ['InventoryID' => $inventoryId];
+
+
+                $currentQuantity = $inventoryResult->Quantity;
+                $newQuantity = (int)$currentQuantity - (int)$quantity;
+
+                $this->inventory->update(["quantity"=>$newQuantity], $where);
+
                 Session::set('success', 'Order added');
                 Url::redirect('/orders');
             }
@@ -112,20 +122,21 @@ class Orders extends BaseController{
         //render view
         $this->view->render('orders/add', compact('errors', 'products','customers', 'warehouses',  'title'));
     }
+
     // edit function''
     public function edit($id){
 
         //CHECK customer ID IF VALID
         if (! is_numeric($id)) {
-            Url::redirect('/inventory');
+            Url::redirect('/order');
         }
 
         //GET customer THROUGH ID
-        $inventory = $this->inventory->get_inventory($id);
+        $order = $this->order->get_order($id);
 
 
         //THROW 404 IF NOT FOUND
-        if ($inventory == null) {
+        if ($order == null) {
             Url::redirect('/404');
         }
 
@@ -133,41 +144,77 @@ class Orders extends BaseController{
 
         if (isset($_POST['submit'])) {
 
-            $product = (isset($_POST['product']) ? $_POST['product'] : null);
-            $warehouse = (isset($_POST['warehouse']) ? $_POST['warehouse'] : null);
-            $quantity = (isset($_POST['quantity']) ? $_POST['quantity']: null);
+            //payload
+        
+            $customer = (isset($_POST['selectCustomer']) ? $_POST['selectCustomer'] : null);
+            $product = (isset($_POST['selectProduct']) ? $_POST['selectProduct'] : null);
+            $quantity = (isset($_POST['quantity']) ? $_POST['quantity'] : null);
+            $totalAmount = (isset($_POST['totalAmount']) ? $_POST['totalAmount']: null);
+            $warehouseID = (isset($_POST['warehouseID']) ? $_POST['warehouseID']: null);
+            $unitPrice = (isset($_POST['unitPrice']) ? $_POST['unitPrice']: null);
+            $orderDate = (isset($_POST['orderdate']) ? $_POST['orderdate']: null);
 
             //input validation
             if($product == 0) $errors[] = "Please select a product";
 
-            if($warehouse == 0) $errors[] = "Please select a warehouse";
-            
-            if (count($errors) == 0) {
+            if($customer == 0) $errors[] = "Please select a customer";
+        
+            //check errors
+            if(count($errors) == 0){
+                // no errors exec.
 
                 $data = [
-                    'WarehouseID'=> $warehouse,
-                    'ProductID'=>$product,
-                    'quantity'=>$quantity,
+                    'CustomerID'=>$customer,
+                    'OrderDate'=>$orderDate,
+                    'WarehouseID'=>$warehouseID,
+                    'TotalAmount'=>$totalAmount
                 ];
 
-                $where = ['InventoryID' => $id];
+                $where = ['OrderID' => $id];
+                
+                $this->order->update($data, $where);
 
-                $this->inventory->update($data, $where);
 
-                Session::set('success', 'Inventory updated');
+                //get product id from inventory
+                $inventoryId = $product;
+                $inventoryResult = $this->inventory->get_inventory($inventoryId);
+                 
+                $productId = $inventoryResult->ProductID;
+            
+                
+                $orderitemdata = [
+                    'ProductID'=> $productId, //
+                    'UnitPrice'=> $unitPrice,
+                    'Quantity'=> $quantity,
+                    'TotalPrice'=> $totalAmount,
+                ];
+                
 
-                Url::redirect('/inventory');
+                $this->orderitem->update($orderitemdata, $where);
 
+
+                //update inventory
+                $where = ['InventoryID' => $inventoryId];
+
+
+                $currentQuantity = $inventoryResult->Quantity;
+                $newQuantity = (int)$currentQuantity - (int)$quantity;
+
+                $this->inventory->update(["quantity"=>$newQuantity], $where);
+
+                Session::set('success', 'Order Updated');
+                Url::redirect('/orders');
             }
-
         }
 
-        $title = 'Edit Inventory';
+        $title = 'Edit Order';
         //populate warehouse and product
         $warehouses = $this->warehouse->getWarehouses();
-        $products = $this->product->getProducts();
+        $customers = $this->customer->getCustomers();
+        $orderitem = $this->orderitem->get_orderitem($order->OrderID);
+        $products = $this->inventory->getInventories();
 
-        $this->view->render('inventory/edit', compact('warehouses','products', 'inventory','errors', 'title'));
+        $this->view->render('orders/edit', compact('warehouses', 'products','orderitem','customers','order','errors', 'title'));
     }
     public function delete($id){
         if (! is_numeric($id)) {
@@ -183,13 +230,14 @@ class Orders extends BaseController{
         // if ($user == null) {
         //     Url::redirect('/404');
         // }
+        
 
-        $where = ['InventoryID' => $id];
+        $where = ['OrderID' => $id];
+        $this->orderitem->delete($where);
+        $this->order->delete($where);
 
-        $this->inventory->delete($where);
+        Session::set('success', 'Order deleted');
 
-        Session::set('success', 'Inventory deleted');
-
-        Url::redirect('/inventory');
+        Url::redirect('/orders');
     }
 }

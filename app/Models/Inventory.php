@@ -27,5 +27,7 @@ class Inventory extends BaseModel{
         $data = $this->db->select("* from inventory where InventoryID = :id", [":id" => $id]);
         return (isset($data[0]) ? $data[0] : null);
     }
+
+    
 }
 ?>

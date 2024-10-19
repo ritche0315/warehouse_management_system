@@ -11,9 +11,9 @@ use App\Helpers\Session;
             <div class="row">
                 <div class="col-12">
                     <?php include(APPDIR.'views/layouts/errors.php'); ?>
-                    <h1 class="mt-4">Add Order</h1>
+                    <h1 class="mt-4">Edit Order</h1>
                     <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item active">Order Entry</li>
+                        <li class="breadcrumb-item active">Edit Order</li>
                     </ol>
                 </div>
 
@@ -25,26 +25,41 @@ use App\Helpers\Session;
                                 <form class='mt-3 p-3 bg-light shadow-lg' id='orderForm' method='post'>
                                     <div class="row">
                                         <div class="col col-lg-3">
-                                            <select name="warehouse" id="warehouse" class='form-select' onchange='selectWarehouseOnChange()'>
-                                                <option value="0">Select Warehouse</option>
-                                                <?php 
-                                                    foreach($warehouses as $warehouse){
-                                                        echo "<option value='".$warehouse->WarehouseID."'>".$warehouse->Name."</option>";
-                                                    }
-                                                
-                                                ?>
-                                            </select>
+                                            <div class="control-group">
+                                                <label for="orderid" class='control-label'>Order ID</label>
+                                                <input type="text" name='orderid' id='orderid' class='form-control' value='<?= $order->OrderID ?>' readonly>
+                                            </div>
                                         </div>
                                         <div class="col col-lg-3">
+                                            <div class="control-group">
+                                                <label for="warehouse">Warehouse</label>
+                                                <select name="warehouse" id="warehouse" class='form-select' onchange='selectWarehouseOnChange()'>
+                                                    <option value="0">Select Warehouse</option>
+                                                    <?php 
+                                                        foreach($warehouses as $warehouse){
+                                                            if($warehouse->WarehouseID == $order->WarehouseID){
+                                                                echo "<option value='".$warehouse->WarehouseID."' selected>".$warehouse->Name."</option>";
+                                                            }else{
+                                                                echo "<option value='".$warehouse->WarehouseID."'>".$warehouse->Name."</option>";
+                                                            }
+                                                        }
+                                                    
+                                                    ?>
+                                                </select>
+
+                                            </div>
+                                        </div>
+                                        <div class="col col-lg-3 mt-4">
                                             <button id='btnNewOrder' class='btn btn-primary' onclick='newOrderBtnClicked()'><i class='fa fa-circle-plus'></i>&nbsp; New Order</button>
-                                            <button id='btnCancelOrder' class='btn btn-danger' onclick='cancelBtnClicked()'><i class='fa fa-close'></i>&nbsp; Cancel</button>
+                                            <a id='btnCancelOrder' class='btn btn-danger' href='/orders/index'><i class='fa fa-close'></i>&nbsp; Cancel</a>
                                         </div>
                                     </div>
                                     <div class="row" id='orderEntry'>
                                         <div class="col col-lg-3">
-                                        <div class="control-group">
+                                            
+                                            <div class="control-group">
                                                 <label for="warehouseID" class='control-label'>Warehouse ID</label>
-                                                <input type="text" name='warehouseID' id='warehouseID' class='form-control'>
+                                                <input type="text" name='warehouseID' id='warehouseID' class='form-control' value='<?= $order->WarehouseID ?>'>
                                             </div>
                                             <div class="control-group">
                                                 <label for="selectCustomer" class='control-label'>Customer</label>
@@ -52,7 +67,12 @@ use App\Helpers\Session;
                                                     <option value="0">Select Customer</option>
                                                     <?php
                                                         foreach($customers as $customer){
-                                                            echo "<option value='".$customer->CustomerID."'>".$customer->FirstName." ".$customer->LastName."</option>";
+                                                            if($customer->CustomerID == $order->CustomerID){
+                                                                echo "<option value='".$customer->CustomerID."' selected>".$customer->FirstName." ".$customer->LastName."</option>";
+                                                            }else{
+                                                                echo "<option value='".$customer->CustomerID."'>".$customer->FirstName." ".$customer->LastName."</option>";
+
+                                                            }
                                                         }
                                                     ?>
                                                 </select>
@@ -70,17 +90,18 @@ use App\Helpers\Session;
 
                                             <div class="control-group">
                                                 <label for="prodname" class='control-label'>Product Name</label>
-                                                <input type="text" name='prodname' id='prodname' class='form-control'>
+                                                <input type="text" name='prodname' id='prodname' class='form-control' value='<?= $orderitem->Name; ?>'>
                                             </div>
 
                                             <div class="control-group">
                                                 <label for="quantity" class='control-label'>Quantity</label>
-                                                <input type="number" name='quantity' id='quantity' class='form-control' value='1' onchange='quantityOnChange()'>
+                                                <!-- <input type="number" name='quantity' id='quantity' class='form-control' onchange='quantityOnChange()' value='0'> -->
+                                                <input type="number" name='quantity' id='quantity' class='form-control' onchange='quantityOnChange()' value='<?= $orderitem->Quantity; ?>'>
                                             </div>
 
                                             <div class="control-group">
                                                 <label for="unitPrice" class='control-label'>Unit Price</label>
-                                                <input type="number" name='unitPrice' id='unitPrice' class='form-control' value='0'>
+                                                <input type="number" name='unitPrice' id='unitPrice' class='form-control' value='<?= $orderitem->UnitPrice ?>'>
                                             </div>
 
                                             
@@ -88,12 +109,12 @@ use App\Helpers\Session;
                                         </div>
                                         <div class="col-12 col-lg-6">
                                             <div class="control-group">
-                                                <label for="orderdate" class='control-label'>Order Date:</label>
-                                                <input type="date" name='orderdate' id='orderdate' class='form-control'>
+                                                <label for="orderdate" class='control-label'>Order Date</label>
+                                                <input type="date" name='orderdate' id='orderdate' class='form-control' value='<?= $order->OrderDate; ?>'>
                                             </div>
                                             <div class="control-group">
                                                 <label for="totalAmount" class='control-label'>Total Amount</label>
-                                                <input type="number" name='totalAmount' id='totalAmount' class='form-control' value='0'>
+                                                <input type="number" name='totalAmount' id='totalAmount' class='form-control' value='<?= $order->TotalAmount; ?>'>
                                             </div>
                                         </div>
                                         <div class="col-12">
@@ -146,11 +167,13 @@ use App\Helpers\Session;
     window.onload= (()=>{ //initialize components
 
         //disabled new order button
-        btnNewOrder.disabled = true
+        btnNewOrder.style.display= "none"
         //hide cancel order button
-        btnCancelOrder.style.display = "none";
+        // btnCancelOrder.style.display = "none";
         //hide order entry
-        orderEntry.style.display = "none"
+        // orderEntry.style.display = "none"
+        
+        populateProductOnSelectProduct()
     })()
 
    
@@ -160,6 +183,20 @@ use App\Helpers\Session;
             btnNewOrder.disabled = true
         }else{
             btnNewOrder.disabled = false
+            let products = <?php echo json_encode($products)?>;
+
+            var orderitem = <?php echo json_encode($orderitem);?>;
+            var order = <?php echo json_encode($order);?>;
+        
+            var html = `<option value='0'>Select Product</option>`
+            products.map(product=>{
+                if(product.WarehouseID == selectWarehouseEl.value){
+                    html += `<option value='${product.InventoryID}' data-product='${product.Name}'>${product.Name}</option>`
+                }
+            })
+            
+            selectProductEl.innerHTML = html
+            warehouseID.value = selectWarehouseEl.value
         }
        
     }
@@ -170,14 +207,10 @@ use App\Helpers\Session;
         selectWarehouseEl.disabled = true
         warehouseID.value = selectWarehouseEl.value
         orderEntry.style.display = ""
-        populateProductOnSelectProduct()
 
     }
 
-    function cancelBtnClicked(){
-        window.location.href = '/orders/add'
-    }
-
+ 
 
     function selectProductOnChange(){
         let products = <?php echo json_encode($products)?>
@@ -211,13 +244,21 @@ use App\Helpers\Session;
     }
 
     function populateProductOnSelectProduct(){
-        let products = <?php echo json_encode($products)?>
+        let products = <?php echo json_encode($products)?>;
 
+        var orderitem = <?php echo json_encode($orderitem);?>;
+        var order = <?php echo json_encode($order);?>;
+      
         var html = `<option value='0'>Select Product</option>`
-
         products.map(product=>{
             if(product.WarehouseID == selectWarehouseEl.value){
-                html += `<option value='${product.InventoryID}' data-product='${product.Name}'>${product.Name}</option>`
+               if(orderitem.OrderID == order.OrderID){
+                   html += `<option value='${product.InventoryID}' data-product='${product.Name}' selected>${product.Name}</option>`
+               }else{
+                   html += `<option value='${product.InventoryID}' data-product='${product.Name}'>${product.Name}</option>`
+
+               }
+                
             }
         })
         

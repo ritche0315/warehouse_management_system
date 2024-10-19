@@ -35,8 +35,8 @@ include(APPDIR.'views/layouts/sbnav.php');
                         <td><?=htmlentities($row->Phone);?></td>
                         <td><?=htmlentities($row->Address);?></td>
                         <td>
-                            <a href="/customers/edit/<?=$row->CustomerID;?>" class="btn btn-xs btn-warning">Edit</a>
-                            <a href="javascript:del('<?=$row->CustomerID;?>','<?=$row->FirstName." ".$row->LastName;?>')" class="btn btn-xs btn-danger">Delete</a>
+                            <a href="/customers/edit/<?=$row->CustomerID;?>" class="btn btn-xs btn-warning"><i class='fa fa-edit text-light'></i></a>
+                            <a href="javascript:del('<?=$row->CustomerID;?>','<?=$row->FirstName." ".$row->LastName;?>')" class="btn btn-xs btn-danger"><i class='fa fa-trash text-light'></i></a>
                         </td>
                     </tr>
                     <?php } ?>
@@ -56,12 +56,12 @@ include(APPDIR.'views/layouts/sbnav.php');
         <footer class="py-4 bg-light mt-auto">
             <div class="container-fluid px-4">
                 <div class="d-flex align-items-center justify-content-between small">
-                    <div class="text-muted">Copyright &copy; Your Website 2023</div>
-                    <div>
+                    <div class="text-muted">Copyright &copy; WMS Smart Stock 2024</div>
+                    <!-- <div>
                         <a href="#">Privacy Policy</a>
                         &middot;
                         <a href="#">Terms &amp; Conditions</a>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </footer>
