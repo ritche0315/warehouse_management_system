@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3307
--- Generation Time: Oct 13, 2024 at 05:00 PM
+-- Generation Time: Oct 20, 2024 at 01:29 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -62,23 +62,10 @@ CREATE TABLE `inventory` (
 --
 
 INSERT INTO `inventory` (`InventoryID`, `WarehouseID`, `ProductID`, `Quantity`) VALUES
-(3, 1, 7, 100),
-(4, 1, 8, 100),
-(5, 2, 10, 100),
+(4, 1, 8, 97),
+(5, 2, 10, 95),
 (6, 1, 13, 100),
-(7, 1, 7, 5);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `lastissuedno`
---
-
-CREATE TABLE `lastissuedno` (
-  `id` int(11) NOT NULL,
-  `YearIssued` int(11) NOT NULL,
-  `OrderNo` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+(7, 1, 7, 87);
 
 -- --------------------------------------------------------
 
@@ -101,7 +88,11 @@ CREATE TABLE `orderitem` (
 
 INSERT INTO `orderitem` (`OrderItemID`, `OrderID`, `ProductID`, `UnitPrice`, `Quantity`, `TotalPrice`) VALUES
 (3, 22, 7, 7500, 1, 7500),
-(4, 23, 7, 7500, 1, 7500);
+(4, 23, 7, 7500, 1, 7500),
+(5, 24, 13, 1150, 2, 2300),
+(6, 25, 13, 1150, 3, 3450),
+(8, 27, 7, 7500, 1, 7500),
+(9, 28, 7, 7500, 5, 37500);
 
 -- --------------------------------------------------------
 
@@ -123,7 +114,11 @@ CREATE TABLE `orders` (
 
 INSERT INTO `orders` (`OrderID`, `CustomerID`, `OrderDate`, `WarehouseID`, `TotalAmount`) VALUES
 (22, 1, '2024-10-09', 1, 7500),
-(23, 3, '2024-10-13', 1, 7500);
+(23, 3, '2024-10-13', 1, 7500),
+(24, 1, '2024-10-16', 1, 2300),
+(25, 3, '2024-10-16', 1, 3450),
+(27, 1, '2024-10-18', 1, 7500),
+(28, 1, '2024-10-25', 1, 37500);
 
 -- --------------------------------------------------------
 
@@ -173,7 +168,8 @@ CREATE TABLE `supplier` (
 
 INSERT INTO `supplier` (`SupplierID`, `Name`, `Address`, `Phone`) VALUES
 (1, 'ABC COMPANY', 'TORIL', '87898'),
-(2, 'XYZ COMPANY', 'TORIL', '321');
+(2, 'XYZ COMPANY', 'TORIL', '321'),
+(3, 'TEST test', 'TORIL test', '123123 test');
 
 -- --------------------------------------------------------
 
@@ -185,17 +181,17 @@ CREATE TABLE `users` (
   `id` int(10) NOT NULL,
   `username` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `email` varchar(100) NOT NULL
+  `email` varchar(100) NOT NULL,
+  `reset_token` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `password`, `email`) VALUES
-(1, 'admin', '$2y$10$JDvkVBVPionqSQQ8EjlAfuZpE7Uu7444xfh8VIxIiq4rhxuHpDuFK', 'ritchelaganson123@gmail.com'),
-(2, 'test1', '$2y$10$DD47LvawRFgwEqrI1DpVIO2OQpdFusJ8BQjxH5eWBWlAL.KFYOaGi', 'test1@gmail.com'),
-(3, 'vhr', '$2y$10$lZAp8oi10O/wZaERZpMtcOGn2cAmrUaBJD.DYXWpHkM.2o6XCCzX6', 'test123@gmail.com');
+INSERT INTO `users` (`id`, `username`, `password`, `email`, `reset_token`) VALUES
+(5, 'admin', '$2y$10$X8gNeZEvV6lsxZZR87G5yuIdB0cP1qLdQk.mskoEoxBFDPFYHe3ma', 'ritche2000@gmail.com', 'dec06cbd6dce4f06013c46e6ab3f52d9'),
+(6, 'test', '$2y$10$hFDsCB.UH9j.5489ie2QFuN8YqHOLvAMkOF84qHrUiSjROfQtYVFW', 'celega8565@avzong.com', 'c28e5d4a0a0f869cfe8810c4e9e959ec');
 
 -- --------------------------------------------------------
 
@@ -234,12 +230,6 @@ ALTER TABLE `inventory`
   ADD PRIMARY KEY (`InventoryID`),
   ADD KEY `WarehouseID` (`WarehouseID`),
   ADD KEY `ProductID` (`ProductID`);
-
---
--- Indexes for table `lastissuedno`
---
-ALTER TABLE `lastissuedno`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `orderitem`
@@ -299,22 +289,16 @@ ALTER TABLE `inventory`
   MODIFY `InventoryID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT for table `lastissuedno`
---
-ALTER TABLE `lastissuedno`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
 -- AUTO_INCREMENT for table `orderitem`
 --
 ALTER TABLE `orderitem`
-  MODIFY `OrderItemID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `OrderItemID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `OrderID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `OrderID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -326,13 +310,13 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `supplier`
 --
 ALTER TABLE `supplier`
-  MODIFY `SupplierID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `SupplierID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `warehouse`
