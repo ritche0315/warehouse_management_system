@@ -98,6 +98,7 @@
                                     <a class="nav-link" href="/users">User Master</a>
                                 </nav>
                             </div>
+                            <a class="nav-link" href="/reports">Reports</a>
 
                             <?php }?>
 

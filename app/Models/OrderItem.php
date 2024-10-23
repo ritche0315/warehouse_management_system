@@ -4,8 +4,8 @@ use System\BaseModel;
 
 class OrderItem extends BaseModel{
 
-    public function get_orders(){
-        return $this->db->select("");
+    public function get_orderitems(){
+        return $this->db->select("orderitem.OrderID, orderitem.ProductID, products.Name, orderitem.UnitPrice, orderitem.Quantity, orderitem.TotalPrice FROM orderitem INNER JOIN products ON products.ProductID = orderitem.ProductID INNER JOIN orders ON orderitem.OrderID = orders.OrderID");
     }
 
     public function insert($data)
@@ -21,6 +21,10 @@ class OrderItem extends BaseModel{
     public function delete($where)
     {
         $this->db->delete('orderitem', $where);
+    }
+
+    public function get_totalqty_orderitems(){
+        return $this->db->select('products.Name, SUM(orderitem.Quantity) AS TotalQuantity FROM orderitem INNER JOIN products ON orderitem.ProductID = products.ProductID GROUP BY orderitem.ProductID');
     }
 
     public function get_orderitem($id){
