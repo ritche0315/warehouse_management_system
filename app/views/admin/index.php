@@ -12,7 +12,13 @@ include(APPDIR.'views/layouts/errors.php');
             <li class="breadcrumb-item active">Admin Dashboard</li>
         </ol>
         
-       
+        <div class="row">
+            <div class="col">
+                <div style="position: relative; height:40vh; width:80vw">
+                    <canvas id="myChart"></canvas>
+                </div>
+            </div>
+        </div>
 
     </div>
 </main>
@@ -31,3 +37,26 @@ include(APPDIR.'views/layouts/errors.php');
 </div>
 
 <?php include(APPDIR.'views/layouts/footer.php');?>
+
+<script>
+    const ctx = document.getElementById('myChart');
+
+new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+    datasets: [{
+      label: '# of Votes',
+      data: [12, 19, 3, 5, 2, 3],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  }
+});
+</script>

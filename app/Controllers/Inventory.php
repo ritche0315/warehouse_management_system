@@ -18,9 +18,16 @@ class Inventory extends BaseController{
     public function __construct(){
         parent::__construct();
 
-        // if (! Session::get('logged_in')) {
-        //     Url::redirect('/admin/login');
-        // }
+        
+        if (!Session::get('logged_in')) {
+            Url::redirect('/admin/login');
+        }
+        
+        if(Session::get('user_username') != 'admin'){
+            if(Session::get('user_username') != 'superadmin'){
+                Url::redirect('/orders');
+            }
+        }
 
         $this->inventory = new InventoryModel();
         $this->product = new Product();

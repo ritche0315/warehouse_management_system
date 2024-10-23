@@ -18,25 +18,36 @@ class Admin extends BaseController{
     {
         parent::__construct();
 
+      
         $this->user = new User();
     }
 
     public function index()
     {
-        if (! Session::get('logged_in')) {
+      
+        if (!Session::get('logged_in')) {
             Url::redirect('/admin/login');
         }
+        
 
+        if(Session::get('user_username') != 'admin'){
+            if(Session::get('user_username') != 'superadmin'){
+                Url::redirect('/orders');
+            }
+        }
+        
         $title = 'Dashboard';
-
         $this->view->render('admin/index', compact('title'));
+
     }
 
     public function login(){
         if (Session::get('logged_in')) {
             Url::redirect('/admin');
         }
+        
         $errors = [];
+
         if (isset($_POST['submit'])) {
             $username = htmlspecialchars($_POST['username']);
             $password = htmlspecialchars($_POST['password']);
@@ -52,10 +63,12 @@ class Admin extends BaseController{
     
                 Session::set('logged_in', true);
                 Session::set('user_id', $data->id);
+                Session::set('user_username', $data->username);
     
                 Url::redirect('/admin');
             }
         }
+
         $title = 'Login';
         $this->view->render('admin/auth/login', compact('title', 'errors'));
     }
@@ -66,10 +79,17 @@ class Admin extends BaseController{
     }
 
     public function reset(){
-        if (Session::get("logged_in")) {
+
+        if (!Session::get("logged_in")) {
             Url::redirect("/admin");
         }
     
+        if(Session::get('user_username') != 'admin'){
+            if(Session::get('user_username') != 'superadmin'){
+                Url::redirect('/orders');
+            }
+        }
+        
         $errors = [];
     
         if (isset($_POST["submit"])) {

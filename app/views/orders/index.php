@@ -2,6 +2,7 @@
 include(APPDIR.'views/layouts/header.php');
 include(APPDIR.'views/layouts/nav.php');
 include(APPDIR.'views/layouts/sbnav.php');
+use App\Helpers\Session;
 ?>
 
 
@@ -35,8 +36,11 @@ include(APPDIR.'views/layouts/sbnav.php');
                             <td>
                                 <button type='button' class='btn btn-xs btn-success btnView' data-orderid='<?=$row->OrderID;?>' id='btnView'><i class='fa fa-eye'></i></button>
                                 <?php include(APPDIR.'views/modals/orderitem.php');?>
+                                <?php if(Session::get('user_username') == 'admin' 
+                                || Session::get('user_username') == 'superadmin'){?>
                                 <a href="/orders/edit/<?=$row->OrderID;?>" class="btn btn-xs btn-warning text-light"><i class='fa fa-edit'></i></a>
                                 <a href="javascript:del('<?=$row->OrderID;?>','<?=$row->OrderID;?>')" class="btn btn-xs btn-danger"><i class='fa fa-trash'></i></a>
+                                <?php }?>
                             </td>
                         </tr>
                         <?php } ?>

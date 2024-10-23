@@ -1,3 +1,7 @@
+<?php use App\Helpers\Session; ?>
+
+<?php $userType = Session::get('user_username');?>
+
 <div id="layoutSidenav">
     <div id="layoutSidenav_nav">
         <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
@@ -21,16 +25,20 @@
                         </nav>
                     </div> -->
                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
-                        <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                        <div class="sb-nav-link-icon"><i class="fa-solid fa-book-open"></i></div>
                         Pages
                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                     </a>
                     <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseProduct" aria-expanded="false" aria-controls="pagesCollapseAuth">
+                           <?php 
+                           if($userType == 'admin' || $userType == 'superadmin'){?> 
+                           <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseProduct" aria-expanded="false" aria-controls="pagesCollapseAuth">
                                 Products
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
+                          
+                            
                             <div class="collapse" id="pagesCollapseProduct" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="/products/add">Add Product</a>
@@ -58,16 +66,8 @@
                                     <a class="nav-link" href="/warehouse">Warehouse Master</a>
                                 </nav>
                             </div>
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseOrder" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                                Order
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="pagesCollapseOrder" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="/orders/add">Add Order</a>
-                                    <a class="nav-link" href="/orders">Orders</a>
-                                </nav>
-                            </div>
+                           
+
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseCustomer" aria-expanded="false" aria-controls="pagesCollapseAuth">
                                 Customer
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
@@ -98,6 +98,24 @@
                                     <a class="nav-link" href="/users">User Master</a>
                                 </nav>
                             </div>
+
+                            <?php }?>
+
+                            <?php if($userType != "admin" || $userType != "superadmin"){?>
+
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseOrder" aria-expanded="false" aria-controls="pagesCollapseAuth">
+                                    Order
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+
+
+                                <div class="collapse" id="pagesCollapseOrder" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="/orders/add">Add Order</a>
+                                        <a class="nav-link" href="/orders">Orders</a>
+                                    </nav>
+                                </div>
+                            <?php }?>
                             <!-- <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
                                 Authentication
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
@@ -135,7 +153,16 @@
             </div>
             <div class="sb-sidenav-footer">
                 <div class="small">Logged in as:</div>
-                Start Bootstrap
+                <?php if($userType == 'admin'){
+                    echo "Admin";
+                }
+                else if($userType == 'superadmin'){
+                    echo "Super Admin";
+                }
+                else{
+                    echo "Staff : \n".$userType;
+                }
+                ?>
             </div>
         </nav>
     </div>
