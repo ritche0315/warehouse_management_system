@@ -29,6 +29,7 @@ class Admin extends BaseController{
         parent::__construct();
 
       
+        $this->user = new User();
         $this->customer = new Customer();
         $this->order = new Order();
         $this->inventory = new Inventory();
