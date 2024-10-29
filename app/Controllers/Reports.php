@@ -55,5 +55,18 @@ class Reports extends BaseController{
         $this->view->render('reports/index', compact('products', 'suppliers','customers','inventories','orderitems','title'));
     }
 
+
+    public function get_orderitem_report(){
+
+        $errors = [];
+
+        $dateFrom = (isset($_POST['dateFrom']) ? $_POST['dateFrom'] : null);
+        $dateTo = (isset($_POST['dateTo']) ? $_POST['dateTo'] : null);
+
+      
+        $orderitem = $this->orderitem->get_orderitem_datefromTo($dateFrom, $dateTo);
+
+        echo json_encode($orderitem);
+    }
     
 }

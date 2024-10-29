@@ -5,7 +5,35 @@ use System\BaseModel;
 class OrderItem extends BaseModel{
 
     public function get_orderitems(){
-        return $this->db->select("orderitem.OrderID, orderitem.ProductID, products.Name, orderitem.UnitPrice, orderitem.Quantity, orderitem.TotalPrice FROM orderitem INNER JOIN products ON products.ProductID = orderitem.ProductID INNER JOIN orders ON orderitem.OrderID = orders.OrderID");
+        return $this->db->select("orderitem.OrderID, orders.OrderDate, warehouse.Name as 'Warehouse', 
+        concat(customers.FirstName,' ',customers.LastName) as 'Customer', products.Name as 'Product', 
+        orderitem.UnitPrice, orderitem.Quantity, orderitem.TotalPrice FROM orderitem 
+        INNER JOIN products ON orderitem.ProductID = products.ProductID 
+        INNER JOIN orders ON orderitem.OrderID = orders.OrderID 
+        INNER JOIN customers ON orders.CustomerID = customers.CustomerID 
+        INNER JOIN warehouse ON orders.WarehouseID = warehouse.WarehouseID 
+        ORDER BY orders.OrderDate;");
+    }
+
+    public function get_orderitem_datefromTo($dateFrom, $dateTo){
+
+        $params = [
+            ':dateFrom' => $dateFrom,
+            ':dateTo' => $dateTo
+        ];
+
+        $data = $this->db->select(
+            "orderitem.OrderID, orders.OrderDate, warehouse.Name as 'Warehouse', 
+            concat(customers.FirstName,' ',customers.LastName) as 'Customer', products.Name as 'Product', 
+            orderitem.UnitPrice, orderitem.Quantity, orderitem.TotalPrice FROM orderitem 
+            INNER JOIN products ON orderitem.ProductID = products.ProductID 
+            INNER JOIN orders ON orderitem.OrderID = orders.OrderID 
+            INNER JOIN customers ON orders.CustomerID = customers.CustomerID 
+            INNER JOIN warehouse ON orders.WarehouseID = warehouse.WarehouseID 
+            WHERE orders.OrderDate >= :dateFrom AND orders.OrderDate <= :dateTo ORDER BY orders.OrderDate;"    
+        , $params);
+
+        return (isset($data[0]) ? $data[0] : "null");
     }
 
     public function insert($data)
