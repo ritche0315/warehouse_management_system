@@ -22,7 +22,7 @@ class OrderItem extends BaseModel{
             ':dateTo' => $dateTo
         ];
 
-        $data = $this->db->select(
+       return $this->db->select(
             "orderitem.OrderID, orders.OrderDate, warehouse.Name as 'Warehouse', 
             concat(customers.FirstName,' ',customers.LastName) as 'Customer', products.Name as 'Product', 
             orderitem.UnitPrice, orderitem.Quantity, orderitem.TotalPrice FROM orderitem 
@@ -33,7 +33,6 @@ class OrderItem extends BaseModel{
             WHERE orders.OrderDate >= :dateFrom AND orders.OrderDate <= :dateTo ORDER BY orders.OrderDate;"    
         , $params);
 
-        return (isset($data[0]) ? $data[0] : "null");
     }
 
     public function insert($data)
