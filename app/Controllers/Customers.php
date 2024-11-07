@@ -35,7 +35,8 @@ class Customers extends BaseController{
         $customers = $this->customer->getCustomers();
 
         $title = 'Customers';
-        $this->view->render('customers/index', compact('customers','title'));
+        $userloggedIn = Session::get('user_username');
+        $this->view->render('customers/index', compact('customers','userloggedIn','title'));
     }
 
     //add function

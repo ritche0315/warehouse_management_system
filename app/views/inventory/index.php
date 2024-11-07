@@ -40,7 +40,9 @@ include(APPDIR.'views/layouts/sbnav.php');
                         <td><?=htmlentities($row->Quantity);?></td>
                         <td>
                             <a href="/inventory/edit/<?=$row->InventoryID;?>" class="btn btn-xs btn-warning"><i class='fa fa-edit text-light'></i></a>
+                            <?php if($userloggedIn == "superadmin"){?>
                             <a href="javascript:del('<?=$row->InventoryID;?>','<?=$row->InventoryID;?>')" class="btn btn-xs btn-danger"><i class='fa fa-trash'></i></a>
+                            <?php }?>
                         </td>
                     </tr>
                     <?php } ?>

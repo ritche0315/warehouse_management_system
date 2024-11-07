@@ -34,9 +34,15 @@ include(APPDIR.'views/layouts/sbnav.php');
                             <td><?=htmlentities($row->Description);?></td>
                             <td><?=htmlentities($row->UnitPrice);?></td>
                             <td><?=htmlentities($row->SupplierName);?></td>
+                            
                             <td>
-                                <a href="/products/edit/<?=$row->ProductID;?>" class="btn btn-xs btn-warning"><i class='fa fa-edit text-light'></i></a>
-                                <a href="javascript:del('<?=$row->ProductID;?>','<?=$row->Name;?>')" class="btn btn-xs btn-danger"><i class='fa fa-trash'></i></a>
+                            <a href="/products/edit/<?=$row->ProductID;?>" class="btn btn-xs btn-warning"><i class='fa fa-edit text-light'></i></a>
+                            <?php 
+                                if($userloggedIn == "superadmin"){
+                            ?>
+                            <a href="javascript:del('<?=$row->ProductID;?>','<?=$row->Name;?>')" class="btn btn-xs btn-danger"><i class='fa fa-trash'></i></a>
+
+                            <?php } ?>
                             </td>
                         </tr>
                         <?php } ?>

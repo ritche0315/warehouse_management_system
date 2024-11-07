@@ -30,7 +30,8 @@
         public function index(){
             $suppliers = $this->supplier->getSuppliers();
             $title = 'Suppliers';
-            $this->view->render('supplier/index', compact('suppliers', 'title'));
+            $userloggedIn = Session::get('user_username');
+            $this->view->render('supplier/index', compact('suppliers','userloggedIn', 'title'));
         }
 
         public function add(){

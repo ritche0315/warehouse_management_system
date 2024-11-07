@@ -39,7 +39,8 @@ class Inventory extends BaseController{
         $inventories = $this->inventory->getInventories();
 
         $title = 'Inventory';
-        $this->view->render('inventory/index', compact('inventories','title'));
+        $userloggedIn = Session::get('user_username');
+        $this->view->render('inventory/index', compact('inventories','userloggedIn','title'));
     }
 
     //add function

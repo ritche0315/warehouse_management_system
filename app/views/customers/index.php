@@ -36,7 +36,9 @@ include(APPDIR.'views/layouts/sbnav.php');
                         <td><?=htmlentities($row->Address);?></td>
                         <td>
                             <a href="/customers/edit/<?=$row->CustomerID;?>" class="btn btn-xs btn-warning"><i class='fa fa-edit text-light'></i></a>
-                            <a href="javascript:del('<?=$row->CustomerID;?>','<?=$row->FirstName." ".$row->LastName;?>')" class="btn btn-xs btn-danger"><i class='fa fa-trash text-light'></i></a>
+                            <?php if($userloggedIn == "superadmin"){?>
+                                <a href="javascript:del('<?=$row->CustomerID;?>','<?=$row->FirstName." ".$row->LastName;?>')" class="btn btn-xs btn-danger"><i class='fa fa-trash text-light'></i></a>
+                            <?php }?>
                         </td>
                     </tr>
                     <?php } ?>

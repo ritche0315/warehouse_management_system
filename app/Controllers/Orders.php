@@ -40,7 +40,8 @@ class Orders extends BaseController{
     public function index(){
         $orders = $this->order->get_orders();
         $title = 'Order';
-        $this->view->render('orders/index', compact('orders','title'));
+        $userloggedIn = Session::get('user_username');
+        $this->view->render('orders/index', compact('orders','userloggedIn','title'));
     }
 
 

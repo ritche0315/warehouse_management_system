@@ -32,7 +32,11 @@ include(APPDIR.'views/layouts/sbnav.php');
                             <td><?=htmlentities($row->email);?></td>
                             <td>
                                 <a href="/users/edit/<?=$row->id;?>" class="btn btn-xs btn-warning"><i class='fa fa-edit text-light'></i></a>
+                                <?php 
+                                    if($userloggedIn == "superadmin"){
+                                ?>
                                 <a href="javascript:del('<?=$row->id;?>','<?=$row->id;?>')" class="btn btn-xs btn-danger"><i class='fa fa-trash'></i></a>
+                                <?php }?>
                             </td>
                         </tr>
                         <?php } ?>

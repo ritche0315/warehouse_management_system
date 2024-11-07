@@ -30,7 +30,8 @@ class Users extends BaseController{
     public function index(){
         $users = $this->user->get_users();
         $title = 'Users';
-        $this->view->render('admin/users/index', compact('users','title'));
+        $userloggedIn = Session::get('user_username');
+        $this->view->render('admin/users/index', compact('users','userloggedIn','title'));
     }
 
     public function add()

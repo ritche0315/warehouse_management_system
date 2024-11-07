@@ -36,7 +36,9 @@ class Products extends BaseController{
         $products = $this->product->getProducts();
 
         $title = 'Products';
-        $this->view->render('products/index', compact('products','title'));
+        $userloggedIn = Session::get('user_username');
+
+        $this->view->render('products/index', compact('products','userloggedIn','title'));
     }
 
     //add function
@@ -142,6 +144,7 @@ class Products extends BaseController{
             Url::redirect('/products');
         }
 
+    
         // if (Session::get('user_id') == $id) {
         //     die('You cannot delete yourself.');
         // }
@@ -159,5 +162,7 @@ class Products extends BaseController{
         Session::set('success', 'Product deleted');
 
         Url::redirect('/products');
+        
+       
     }
 }

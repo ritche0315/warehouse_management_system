@@ -39,7 +39,9 @@ use App\Helpers\Session;
                                 <?php if(Session::get('user_username') == 'admin' 
                                 || Session::get('user_username') == 'superadmin'){?>
                                 <a href="/orders/edit/<?=$row->OrderID;?>" class="btn btn-xs btn-warning text-light"><i class='fa fa-edit'></i></a>
+                                <?php if($userloggedIn == "superadmin"){?>
                                 <a href="javascript:del('<?=$row->OrderID;?>','<?=$row->OrderID;?>')" class="btn btn-xs btn-danger"><i class='fa fa-trash'></i></a>
+                                <?php }?>
                                 <?php }?>
                             </td>
                         </tr>
