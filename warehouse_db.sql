@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3307
--- Generation Time: Oct 20, 2024 at 01:29 PM
+-- Generation Time: Nov 10, 2024 at 10:58 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -191,7 +191,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `reset_token`) VALUES
 (5, 'admin', '$2y$10$X8gNeZEvV6lsxZZR87G5yuIdB0cP1qLdQk.mskoEoxBFDPFYHe3ma', 'ritche2000@gmail.com', 'dec06cbd6dce4f06013c46e6ab3f52d9'),
-(6, 'test', '$2y$10$hFDsCB.UH9j.5489ie2QFuN8YqHOLvAMkOF84qHrUiSjROfQtYVFW', 'celega8565@avzong.com', 'c28e5d4a0a0f869cfe8810c4e9e959ec');
+(6, 'test', '$2y$10$hFDsCB.UH9j.5489ie2QFuN8YqHOLvAMkOF84qHrUiSjROfQtYVFW', 'celega8565@avzong.com', 'c28e5d4a0a0f869cfe8810c4e9e959ec'),
+(7, 'superadmin', '$2y$10$LV3kio/T359f.doVzPQO5u6a.mwPKV30L0768Xkujk3rw/RxpglF6', 'superadmin@gmail.com', '');
 
 -- --------------------------------------------------------
 
@@ -316,7 +317,7 @@ ALTER TABLE `supplier`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `warehouse`
