@@ -206,7 +206,7 @@ include(APPDIR.'views/layouts/sbnav.php');
                                 <td>${orderitem.TotalPrice}</td>
                                 </tr>
                         `
-                        totalAmount += orderitem.TotalPrice;
+                        totalAmount += parseFloat(orderitem.TotalPrice);
                     })
 
                     tbodyEl.innerHTML = html;
@@ -271,14 +271,14 @@ include(APPDIR.'views/layouts/sbnav.php');
                             <td>${orderitem.TotalPrice}</td>
                             </tr>
                     `
-                    totalAmount += orderitem.TotalPrice;
+                    totalAmount += parseFloat(orderitem.TotalPrice);
                 })
 
                 tbodyEl.innerHTML = html;
 
                 total.innerText = 'Total: '+totalAmount
                 totalRows.innerText = 'Total Rows: '+orderitems.length
-                break
+                break;
             case "Inventory":
                 
                 theadEl.innerHTML = ``
@@ -318,7 +318,7 @@ include(APPDIR.'views/layouts/sbnav.php');
                             <td>${inv.WarehouseLocation}</td>
                             </tr>
                     `
-                    totalQuantity += inv.Quantity;
+                    totalQuantity += parseInt(inv.Quantity);
                 })
 
                 tbodyEl.innerHTML = html;
@@ -450,7 +450,7 @@ include(APPDIR.'views/layouts/sbnav.php');
                             <td>${product.SupplierName}</td>
                             </tr>
                     `
-                    totalAmount += product.UnitPrice;
+                    totalAmount += parseFloat(product.UnitPrice);
                 })
 
                 tbodyEl.innerHTML = html;
