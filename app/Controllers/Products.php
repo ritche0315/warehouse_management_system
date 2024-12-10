@@ -17,15 +17,15 @@ class Products extends BaseController{
         parent::__construct();
 
         
-        if (!Session::get('logged_in')) {
-            Url::redirect('/admin/login');
-        }
+        // if (!Session::get('logged_in')) {
+        //     Url::redirect('/admin/login');
+        // }
 
-        if(Session::get('user_username') != 'admin'){
-            if(Session::get('user_username') != 'superadmin'){
-                Url::redirect('/orders');
-            }
-        }
+        // if(Session::get('user_username') != 'admin'){
+        //     if(Session::get('user_username') != 'superadmin'){
+        //         Url::redirect('/orders');
+        //     }
+        // }
 
         $this->product = new Product();
         $this->supplier = new Supplier();
@@ -41,6 +41,12 @@ class Products extends BaseController{
         $this->view->render('products/index', compact('products','userloggedIn','title'));
     }
 
+    public function fetch_product($barcode){
+        $products = $this->product->get_product_by_barcode($barcode);
+
+        var_dump($products->ProductID);
+        // var_dump($products);
+    }
     //add function
     public function add(){
         $errors = [];

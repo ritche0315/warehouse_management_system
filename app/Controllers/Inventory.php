@@ -19,15 +19,15 @@ class Inventory extends BaseController{
         parent::__construct();
 
         
-        if (!Session::get('logged_in')) {
-            Url::redirect('/admin/login');
-        }
+        // if (!Session::get('logged_in')) {
+        //     Url::redirect('/admin/login');
+        // }
         
-        if(Session::get('user_username') != 'admin'){
-            if(Session::get('user_username') != 'superadmin'){
-                Url::redirect('/orders');
-            }
-        }
+        // if(Session::get('user_username') != 'admin'){
+        //     if(Session::get('user_username') != 'superadmin'){
+        //         Url::redirect('/orders');
+        //     }
+        // }
 
         $this->inventory = new InventoryModel();
         $this->product = new Product();
@@ -41,6 +41,15 @@ class Inventory extends BaseController{
         $title = 'Inventory';
         $userloggedIn = Session::get('user_username');
         $this->view->render('inventory/index', compact('inventories','userloggedIn','title'));
+    }
+
+    public function fetch_inventory($barcode){
+        $inventories = $this->inventory->get_inventory_by_barcode($barcode);
+
+        // $userloggedIn = Session::get('user_username');
+        // $this->view->render('inventory/index', compact('inventories','userloggedIn','title'));
+
+        echo json_encode($inventories);
     }
 
     //add function

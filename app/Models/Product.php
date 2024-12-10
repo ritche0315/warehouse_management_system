@@ -24,6 +24,10 @@ class Product extends BaseModel{
     {
         $this->db->delete('products', $where);
     }
+    public function get_product_by_barcode($barcode){
+        $data = $this->db->select("* from products where Barcode = :Barcode", [":Barcode" => $barcode]);
+        return (isset($data[0]) ? $data[0] : null);
+    }
 
     public function get_product($id){
         $data = $this->db->select("* from products where ProductID = :id", [":id" => $id]);

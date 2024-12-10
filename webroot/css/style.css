@@ -18,3 +18,17 @@
 #myUL button:not(.found),  #customer-searchfilter-container button:not(.found){
     display: none;
 }
+
+#orderTable tbody > tr:hover{
+    background-color: #ffcccc;
+}
+
+#ordersTableWrapper, #orderDetailsTableWrapper {
+    max-height: 400px;
+    overflow: auto;
+}
+
+
+.selected {  
+    background-color: #ffcccc; /* Light red background for selected row */  
+}

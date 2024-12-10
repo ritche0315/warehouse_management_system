@@ -4,19 +4,19 @@ namespace App\Controllers;
 use System\BaseController;
 use App\Helpers\Session;
 use App\Helpers\Url;
-use App\Models\OrderItem as OrderItemModel;
+use App\Models\OrderDetail;
 
 
-class OrderItem extends BaseController{
+class OrderDetails extends BaseController{
 
-    protected $orderitem;
+    protected $orderDetail;
     
     public function __construct(){
         parent::__construct();
 
-        if (!Session::get('logged_in')) {
-            Url::redirect('/admin/login');
-        }
+        // if (!Session::get('logged_in')) {
+        //     Url::redirect('/admin/login');
+        // }
 
         // only authorized user can access this route(admin & superadmin)
         // if(Session::get('user_username') != "admin" 
@@ -25,7 +25,7 @@ class OrderItem extends BaseController{
         //     return;
         // }
 
-        $this->orderitem = new OrderItemModel();
+        $this->orderDetail = new OrderDetail();
     }
 
     //view function
@@ -36,24 +36,24 @@ class OrderItem extends BaseController{
     // }
 
 
-    public function view_orderitem($id){
+    public function fetch_orderdetails($id){
         //CHECK customer ID IF VALID
         if (! is_numeric($id)) {
             Url::redirect('/inventory');
         }
 
         //GET customer THROUGH ID
-        $orderitem = $this->orderitem->get_orderitem($id);
+        $orderDetails = $this->orderDetail->get_orderdetails($id);
 
 
         //THROW 404 IF NOT FOUND
-        if ($orderitem == null) {
+        if ($orderDetails == null) {
             Url::redirect('/404');
         }
 
             
 
-        echo json_encode($orderitem);
+        echo json_encode(["orderdetails"=>$orderDetails]);
             
         
     }

@@ -6,7 +6,6 @@ use App\Helpers\Session;
 use App\Helpers\Url;
 use App\Models\User;
 use App\Models\Order;
-use App\Models\OrderItem;
 use App\Models\Inventory;
 use App\Models\Supplier;
 use App\Models\Customer;
@@ -22,7 +21,6 @@ class Admin extends BaseController{
     protected $order;
     protected $supplier;
     protected $customer;
-    protected $orderitem;
 
     public function __construct()
     {
@@ -34,7 +32,6 @@ class Admin extends BaseController{
         $this->order = new Order();
         $this->inventory = new Inventory();
         $this->supplier = new Supplier();
-        $this->orderitem = new OrderItem();
     }
 
     public function index()
@@ -56,7 +53,7 @@ class Admin extends BaseController{
         $inventory = count($this->inventory->getInventories());
         $orders = count($this->order->get_orders());
         
-        $orderitems = $this->orderitem->get_totalqty_orderitems();
+        // $orderitems = $this->orderitem->get_totalqty_orderitems();
     
 
         $reports = [
@@ -67,7 +64,7 @@ class Admin extends BaseController{
         ];
 
         $title = 'Dashboard';
-        $this->view->render('admin/index', compact('title','reports','orderitems'));
+        $this->view->render('admin/index', compact('title','reports'));
 
     }
 

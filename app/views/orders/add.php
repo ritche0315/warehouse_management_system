@@ -11,219 +11,255 @@ use App\Helpers\Session;
             <div class="row">
                 <div class="col-12">
                     <?php include(APPDIR.'views/layouts/errors.php'); ?>
-                    <h1 class="mt-4">Add Order</h1>
-                    <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item active">Order Entry</li>
-                    </ol>
+                    <p class="mt-3 fw-light fs-3">Add Order</p>
                 </div>
-
+                
                 <div class="col">
-                    <div class='container-fluid'>
-                        
-                        <div class="row" >
-                            <div class="col">
-                                <form class='mt-3 p-3 bg-light shadow-lg' id='orderForm' method='post'>
-                                    <div class="row">
-                                        <div class="col col-lg-3">
-                                            <select name="warehouse" id="warehouse" class='form-select' onchange='selectWarehouseOnChange()'>
-                                                <option value="0">Select Warehouse</option>
-                                                <?php 
-                                                    foreach($warehouses as $warehouse){
-                                                        echo "<option value='".$warehouse->WarehouseID."'>".$warehouse->Name."</option>";
-                                                    }
-                                                
-                                                ?>
-                                            </select>
-                                        </div>
-                                        <div class="col col-lg-3">
-                                            <button id='btnNewOrder' class='btn btn-primary' onclick='newOrderBtnClicked()'><i class='fa fa-circle-plus'></i>&nbsp; New Order</button>
-                                            <button id='btnCancelOrder' class='btn btn-danger' onclick='cancelBtnClicked()'><i class='fa fa-close'></i>&nbsp; Cancel</button>
-                                        </div>
-                                    </div>
-                                    <div class="row" id='orderEntry'>
-                                        <div class="col col-lg-3">
-                                        <div class="control-group">
-                                                <label for="warehouseID" class='control-label'>Warehouse ID</label>
-                                                <input type="text" name='warehouseID' id='warehouseID' class='form-control'>
-                                            </div>
-                                            <div class="control-group">
-                                                <label for="selectCustomer" class='control-label'>Customer</label>
-                                                <select name="selectCustomer" id="selectCustomer" class='form-select ' onchange=''>
-                                                    <option value="0">Select Customer</option>
-                                                    <?php
-                                                        foreach($customers as $customer){
-                                                            echo "<option value='".$customer->CustomerID."'>".$customer->FirstName." ".$customer->LastName."</option>";
-                                                        }
-                                                    ?>
-                                                </select>
-                                            </div>
-                                            <div class="control-group">
-                                                <label for="selectProduct" class='control-label'>Product</label>
-                                                <select name="selectProduct" id="selectProduct" class='form-select' onchange='selectProductOnChange()'>
-                                                 
-                                                </select>
-                                            </div>
-                                            
-                                            
-                                        </div>
-                                        <div class="col col-lg-3">
-
-                                            <div class="control-group">
-                                                <label for="prodname" class='control-label'>Product Name</label>
-                                                <input type="text" name='prodname' id='prodname' class='form-control'>
-                                            </div>
-
-                                            <div class="control-group">
-                                                <label for="quantity" class='control-label'>Quantity</label>
-                                                <input type="number" name='quantity' id='quantity' class='form-control' value='1' onchange='quantityOnChange()'>
-                                            </div>
-
-                                            <div class="control-group">
-                                                <label for="unitPrice" class='control-label'>Unit Price</label>
-                                                <input type="number" name='unitPrice' id='unitPrice' class='form-control' value='0'>
-                                            </div>
-
-                                            
-
-                                        </div>
-                                        <div class="col-12 col-lg-6">
-                                            <div class="control-group">
-                                                <label for="orderdate" class='control-label'>Order Date:</label>
-                                                <input type="date" name='orderdate' id='orderdate' class='form-control'>
-                                            </div>
-                                            <div class="control-group">
-                                                <label for="totalAmount" class='control-label'>Total Amount</label>
-                                                <input type="number" name='totalAmount' id='totalAmount' class='form-control' value='0'>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                             <div class="control-group">
-                                                <input type="submit" value="Submit" name='submit' class='btn btn-success mt-3'>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
+                    <p class='bg-dark text-light p-3'>Orderline</p>
+                    <div class="mb-3 px-3">
+                        <label for="search-barcode" class='form-label'>Search/Scan Barcode:</label>
+                        <input type='text' name="barcode" id="search-barcode" class='form-control'/>
+                    </div>
+                    <div class="mb-3 px-3">
+                        <div class="table-responsive border border-normal" style='max-height: 400px; overflow-y: auto;'>
+                            <table class="table table-bordered" id="orderTable">
+                                <thead>
+                                    <th>Barcode</th>
+                                    <th>Item Name</th>
+                                    <th>Unit Price</th>
+                                    <th>Quantity</th>
+                                    <th>Sub Total</th>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
+                    <div class="mb-3 px-3 d-flex justify-content-end gap-2">
+                        <button type="button" class='btn btn-danger' id='btnVoid'>VOID</button>
+                    </div>
                 </div>
-               
+                <div class="col-md-4 px-0" style="background-color: #F2F4F3;">
+                    <div class="bg-dark">
+                        <label for="totalItems" class='form-label text-light p-3'>Total items:</label>
+                        <label class='form-label text-light' id='totalItems'>0</label>
+                    </div>
+                    <div class="bg-warning">
+                        <label for="totalAmount" class='form-label p-3 fs-4 fw-bold'>Total Amount:</label>
+                        <label class='form-label fs-4 fw-bold' id='totalAmount'>0.00</label>
+                    </div>
 
+                    <p class='text-light p-3 bg-dark'>Customer Information</p>
+                    <div class="mb-3 px-3">
+                        <label for="select-customer" class='form-label'>Choose Customer:</label>
+                        <select name="select-customer" id="select-customer" class='form-select'>
+                            <option value='0' selected>Choose...</option>
+                            <?php   foreach($customers as $customer){
+                                echo "<option value='".$customer->CustomerID."'>".$customer->FirstName.' '.$customer->LastName."</option>";
+                            }?>
+                        </select>
+                    </div>
+                    <div class="px-3 mb-5 d-flex justify-content-end">
+                        <button type="button" class='btn btn-success fs-4' id='btnSubmitOrder'>Submit Order</button>
+                    </div>
+                </div>
             </div>
-                
         </div>
     </main>
     <footer class="py-4 bg-light mt-auto">
         <div class="container-fluid px-4">
             <div class="d-flex align-items-center justify-content-between small">
                 <div class="text-muted">Copyright &copy; Smart Stock 2024</div>
-                <div>
-                    <!-- <a href="#">Privacy Policy</a>
-                    &middot;
-                    <a href="#">Terms &amp; Conditions</a>
-                </div> -->
             </div>
         </div>
     </footer>
-    </div>
 </div>
 
 <script>
+    //datasources
+    //elements
+    const searchBarcodeInput = document.querySelector('#search-barcode');  
+    const btnSubmitOrder = document.querySelector('#btnSubmitOrder');
+    const table = document.querySelector('#orderTable');  
+    const tbody = document.querySelector('#orderTable > tbody');  
+    const totalItemsEl = document.querySelector('#totalItems');  
+    const totalAmountEl = document.querySelector('#totalAmount');  
+    const selectCustomerEl = document.querySelector('#select-customer');
     
-    //row1
-    var selectWarehouseEl = document.querySelector('#warehouse')
-    var btnNewOrder = document.querySelector('#btnNewOrder')
-    var btnCancelOrder = document.querySelector('#btnCancelOrder')
-    
-    var selectProductEl = document.querySelector('#selectProduct')
-    var orderEntry = document.querySelector('#orderEntry')                                 
-    var prodName = document.querySelector('#prodname')
-    var quantity = document.querySelector('#quantity')
-    var totalAmount = document.querySelector('#totalAmount')
-    var warehouseID = document.querySelector('#warehouseID')
-    var unitPrice = document.querySelector('#unitPrice')
-                                                        
-    window.onload= (()=>{ //initialize components
+    let selectedRow = null; // Variable to keep track of the selected row  
 
-        //disabled new order button
-        btnNewOrder.disabled = true
-        //hide cancel order button
-        btnCancelOrder.style.display = "none";
-        //hide order entry
-        orderEntry.style.display = "none"
-    })()
+    function calculateTotalItemsAndTotalAmount() {  
+        const rows = Array.from(tbody.rows); // Get the rows from tbody  
 
-   
+        const totalItems = rows.reduce((sum, row) => {  
+            const value = parseInt(row.children[3].innerText) || 0;  
+            return sum + value;  
+        }, 0);  
 
-    function selectWarehouseOnChange(){
-        if(selectWarehouseEl.value == "0"){
-            btnNewOrder.disabled = true
-        }else{
-            btnNewOrder.disabled = false
+        const totalAmount = rows.reduce((sum, row) => {  
+            const value = parseFloat(row.children[4].innerText) || 0;  
+            return sum + value;  
+        }, 0);  
+
+        totalItemsEl.innerText = totalItems;  
+        totalAmountEl.innerText = totalAmount.toFixed(2);  
+    }  
+
+    // Event delegation for selecting a row  
+    tbody.addEventListener('click', function (e) {  
+        const row = e.target.closest('tr'); // Get clicked row  
+        if (row) {  
+            // Highlight the selected row  
+            if (selectedRow) {  
+                selectedRow.classList.remove('selected'); // Remove highlight from previously selected row  
+            }  
+            selectedRow = row; // Assign the new selected row  
+            selectedRow.classList.add('selected'); // Highlight the currently selected row  
+        }  
+    });  
+
+    // Function to find a row by barcode (for existing functionality)  
+    function findRowByBarcode(barcode) {  
+        // Find the row with the specified barcode  
+        return Array.from(tbody.rows).find(row => (row.children[0].innerText).toLowerCase() === barcode);  
+    }  
+
+    // Search barcode  
+    searchBarcodeInput.addEventListener('keydown', function (event) {  
+        if (event.key === 'Enter') {  
+            const barcode = searchBarcodeInput.value; // Replace this with the actual barcode you are searching for  
+            
+            const existingRow = findRowByBarcode(barcode); 
+            
+            if (existingRow) {  
+                // If row exists, increase the quantity  
+                const qtyCell = existingRow.children[3];  
+                const existingQuantity = parseInt(qtyCell.innerText) || 0;  
+                const newQuantity = existingQuantity + 1; // Increase by 1  
+                qtyCell.innerText = newQuantity;  
+
+                // Update the total for this row  
+                const total = parseFloat(existingRow.children[2].innerText) * newQuantity; // Recalculate total  
+                existingRow.children[4].innerText = total.toFixed(2); // Update total in index 4  
+                calculateTotalItemsAndTotalAmount();
+            } else { 
+                fetch('/inventory/fetch_inventory/'+barcode)
+                .then(response=> response.json())
+                .then(responseData =>{
+                    
+                    if(responseData){
+                        const html = `<tr>  
+                            <td>${responseData.Barcode}</td>  
+                            <td>${responseData.Name}</td>  
+                            <td>${responseData.UnitPrice}</td>  
+                            <td class='qty'>1</td>  
+                            <td>${parseFloat(responseData.UnitPrice).toFixed(2)}</td>  
+                        </tr>`;  
+            
+                        tbody.innerHTML += html;
+                        calculateTotalItemsAndTotalAmount(); // Update overall totals  
+                    }
+                    else{
+                        alert('barcode not found, please try again !')
+                    }
+                }).catch(err=> console.log(err))
+            }  
+
+            
+            // Optional: Clear the input field after action  
+            searchBarcodeInput.value = '';  
+        }  
+    });  
+
+    // Handle void button click  
+    document.getElementById('btnVoid').addEventListener('click', function () {  
+        if (selectedRow) {  
+            selectedRow.remove(); // Remove the selected row  
+            selectedRow = null; // Reset selected row  
+            calculateTotalItemsAndTotalAmount(); // Update totals after a row is deleted  
+        } else {  
+            alert('Please select a row to void.'); // Alert if no row is selected  
+        }  
+    });  
+
+    // Add click event listener to quantity cells
+    tbody.addEventListener('click', function (e) {
+        if (e.target && e.target.classList.contains('qty')) {
+            const qtyCell = e.target;
+            const currentQty = parseInt(qtyCell.innerText) || 0;
+            const newQty = prompt('Enter new quantity:', currentQty);
+
+            if (newQty !== null) {
+                const quantity = parseInt(newQty);
+                if (!isNaN(quantity) && quantity > 0) {
+                    qtyCell.innerText = quantity;
+
+                    // Update the total for this row
+                    const row = qtyCell.closest('tr');
+                    const unitPrice = parseFloat(row.children[2].innerText);
+                    const total = unitPrice * quantity;
+                    row.children[4].innerText = total.toFixed(2);
+
+                    calculateTotalItemsAndTotalAmount(); // Update overall totals
+                } else {
+                    alert('Please enter a valid quantity.');
+                }
+            }
         }
-       
-    }
+    });
 
-    function newOrderBtnClicked(){
-        btnCancelOrder.style.display = "";
-        btnNewOrder.disabled = true
-        selectWarehouseEl.disabled = true
-        warehouseID.value = selectWarehouseEl.value
-        orderEntry.style.display = ""
-        populateProductOnSelectProduct()
-
-    }
-
-    function cancelBtnClicked(){
-        window.location.href = '/orders/add'
-    }
-
-
-    function selectProductOnChange(){
-        let products = <?php echo json_encode($products)?>
-
-        products.map(product=>{
-            if(selectProductEl.value == product.InventoryID) {
-                prodName.value = product.Name
-                
-              
-                const qty = quantity.value;
-
-                unitPrice.value = product.UnitPrice
-                totalAmount.value = Number(product.UnitPrice * qty);
-            }
+    btnSubmitOrder.addEventListener('click', ()=>{
+        if(totalAmountEl.innerText == "0.00"){
+            alert('Submit order failed, Orderline is empty');
+            return;
+        }
         
-        });
-    }
+        if(selectCustomerEl.value == '0'){
+            alert('Please select a customer');
+            return;
+        }
+        const rows = Array.from(tbody.rows);
 
-    function quantityOnChange(){
-        let products = <?php echo json_encode($products)?>
+        const order = {
+            'totalAmount': totalAmountEl.innerText,
+            'totalItems': totalItemsEl.innerText,
+            'customerId': selectCustomerEl.value
+        }
 
-        products.map(product=>{
-            if(selectProductEl.value == product.InventoryID) {
-
-                const unitPrice = product.UnitPrice
-                const qty = quantity.value;
-                totalAmount.value = Number(unitPrice * qty);
-            }
         
-        });
-    }
+        const tableRows = document.querySelectorAll('#orderTable tbody tr');  
+        const orderDetails = [];  
+        
+        tableRows.forEach(row => {  
+            const cells = row.querySelectorAll('td');  
+            const rowData = {  
+                barcode: cells[0].innerText,  
+                quantity: cells[3].innerText,  
+                subtotal: cells[4].innerText  
+            };  
+            orderDetails.push(rowData);  
+        });  
 
-    function populateProductOnSelectProduct(){
-        let products = <?php echo json_encode($products)?>
-
-        var html = `<option value='0'>Select Product</option>`
-
-        products.map(product=>{
-            if(product.WarehouseID == selectWarehouseEl.value){
-                html += `<option value='${product.InventoryID}' data-product='${product.Name}'>${product.Name}</option>`
-            }
+        const formData = new FormData();
+        formData.append("data", JSON.stringify({"order":order, "orderdetails": orderDetails}));
+        
+        fetch('/orders/add_order', {
+            method:'POST',
+            body: formData
         })
-        
-        selectProductEl.innerHTML = html
-    }
+        .then(response=> response.json())
+        .then(responseData => {
+            alert(responseData.message);
+            tbody.innerHTML = ``;
+            totalAmountEl.innerText = "0.00";
+            totalItemsEl.innerText = "0";
+            selectCustomerEl.value = '0';
+        })
+        .catch(err=> console.log(err))
+        // rows.forEach(row=>{
+        //    fetch('/')
+        // })
+    })
+
 </script>
-
-
 <?php include(APPDIR.'views/layouts/footer.php');?>

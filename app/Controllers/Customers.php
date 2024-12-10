@@ -39,6 +39,7 @@ class Customers extends BaseController{
         $this->view->render('customers/index', compact('customers','userloggedIn','title'));
     }
 
+
     //add function
     public function add(){
         $errors = [];
