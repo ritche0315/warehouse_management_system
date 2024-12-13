@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3307
--- Generation Time: Nov 10, 2024 at 10:58 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.1.25
+-- Host: 127.0.0.1
+-- Generation Time: Dec 13, 2024 at 04:24 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -42,7 +42,13 @@ CREATE TABLE `customers` (
 
 INSERT INTO `customers` (`CustomerID`, `FirstName`, `LastName`, `Email`, `Phone`, `Address`) VALUES
 (1, 'erica', 'silvosa', 'ericasilvosa123@gmail.com', '12345', 'singapore'),
-(3, 'Kineth', 'Pestaño', 'Kineth123@yahoo.com', '12345', 'Lizada');
+(3, 'Kineth', 'Pestaño', 'Kineth123@yahoo.com', '12345', 'Lizada'),
+(6, 'Abdul pogi', 'Magaluyan', 'abdulmagaluyan@gmail.com', '8823812', 'Purok 18'),
+(7, 'ritche', 'laganson', 'ritchepogi123@gmail.com', '111222333', 'toril, davao city'),
+(8, 'jb', 'rulona', 'jbrulona@gmail.com', '77723331', 'inawayan'),
+(9, 'juan', 'dela cruz', 'juandelacruz@gmail.com', '8888445', 'toril davao city'),
+(10, 'john', 'doe', 'johndoe@gmail.com', '9929392', 'toril'),
+(11, 'ASDWW', 'SMITH', 'ASDWWSMITH@GMAIL.COM', '9929392', 'TORIL');
 
 -- --------------------------------------------------------
 
@@ -52,47 +58,80 @@ INSERT INTO `customers` (`CustomerID`, `FirstName`, `LastName`, `Email`, `Phone`
 
 CREATE TABLE `inventory` (
   `InventoryID` int(10) NOT NULL,
-  `WarehouseID` int(10) NOT NULL,
   `ProductID` int(10) NOT NULL,
-  `Quantity` int(11) NOT NULL
+  `Unit` varchar(55) NOT NULL,
+  `Quantity` int(11) NOT NULL,
+  `ReOrderLevel` int(11) NOT NULL,
+  `WarehouseID` int(11) DEFAULT NULL,
+  `Status` varchar(55) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `inventory`
 --
 
-INSERT INTO `inventory` (`InventoryID`, `WarehouseID`, `ProductID`, `Quantity`) VALUES
-(4, 1, 8, 97),
-(5, 2, 10, 95),
-(6, 1, 13, 100),
-(7, 1, 7, 87);
+INSERT INTO `inventory` (`InventoryID`, `ProductID`, `Unit`, `Quantity`, `ReOrderLevel`, `WarehouseID`, `Status`) VALUES
+(11, 7, 'pcs', 0, 10, 3, 'out of stock'),
+(12, 8, 'pcs', 3, 10, 3, 'low-stock'),
+(13, 11, 'box', 17, 10, 3, 'in-stock'),
+(14, 18, 'box', 10, 10, 3, 'low-stock'),
+(15, 20, 'pcs', 107, 10, 3, 'in-stock'),
+(16, 21, 'pcs', 55, 10, 3, 'in-stock'),
+(17, 22, 'pcs', 0, 10, 3, 'out of stock'),
+(18, 23, 'box', 20, 10, 3, 'low-stock'),
+(19, 24, 'box', 5, 10, 3, 'low-stock'),
+(20, 18, 'pcs', 10, 10, 3, 'low-stock'),
+(21, 7, 'pcs', 0, 10, 3, 'out of stock'),
+(22, 25, 'pcs', 60, 10, 3, 'in-stock');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `orderitem`
+-- Table structure for table `orderdetails`
 --
 
-CREATE TABLE `orderitem` (
-  `OrderItemID` int(10) NOT NULL,
+CREATE TABLE `orderdetails` (
+  `OrderDetail_ID` int(10) NOT NULL,
   `OrderID` int(10) NOT NULL,
   `ProductID` int(10) NOT NULL,
-  `UnitPrice` double NOT NULL,
+  `PriceSold` double NOT NULL,
   `Quantity` int(11) NOT NULL,
-  `TotalPrice` double NOT NULL
+  `SubTotal` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `orderitem`
+-- Dumping data for table `orderdetails`
 --
 
-INSERT INTO `orderitem` (`OrderItemID`, `OrderID`, `ProductID`, `UnitPrice`, `Quantity`, `TotalPrice`) VALUES
-(3, 22, 7, 7500, 1, 7500),
-(4, 23, 7, 7500, 1, 7500),
-(5, 24, 13, 1150, 2, 2300),
-(6, 25, 13, 1150, 3, 3450),
-(8, 27, 7, 7500, 1, 7500),
-(9, 28, 7, 7500, 5, 37500);
+INSERT INTO `orderdetails` (`OrderDetail_ID`, `OrderID`, `ProductID`, `PriceSold`, `Quantity`, `SubTotal`) VALUES
+(20, 51, 7, 7500, 1, 7500),
+(21, 51, 8, 4500, 5, 22500),
+(22, 52, 7, 7500, 5, 37500),
+(23, 53, 7, 7500, 5, 37500),
+(24, 54, 7, 7500, 5, 37500),
+(25, 55, 7, 7500, 5, 37500),
+(26, 56, 7, 7500, 5, 37500),
+(27, 57, 7, 7500, 5, 37500),
+(28, 62, 7, 7500, 50, 375000),
+(29, 63, 7, 7500, 5, 37500),
+(30, 63, 8, 4500, 5, 22500),
+(31, 64, 7, 7500, 3, 22500),
+(32, 64, 8, 4500, 1, 4500),
+(33, 65, 7, 7500, 1, 7500),
+(34, 66, 7, 7500, 5, 37500),
+(35, 66, 8, 4500, 6, 27000),
+(36, 67, 18, 500, 10, 5000),
+(37, 68, 20, 350, 3, 1050),
+(38, 68, 7, 7500, 10, 75000),
+(39, 69, 21, 123, 5, 615),
+(40, 69, 7, 7500, 1, 7500),
+(41, 70, 22, 2000, 10, 20000),
+(42, 71, 17, 1502, 5, 28000),
+(43, 72, 18, 500, 7, 3500),
+(44, 73, 22, 2000, 30, 60000),
+(45, 74, 7, 7500, 5, 37500),
+(46, 75, 7, 7500, 25, 187500),
+(47, 76, 25, 850, 5, 4250);
 
 -- --------------------------------------------------------
 
@@ -103,22 +142,41 @@ INSERT INTO `orderitem` (`OrderItemID`, `OrderID`, `ProductID`, `UnitPrice`, `Qu
 CREATE TABLE `orders` (
   `OrderID` int(10) NOT NULL,
   `CustomerID` int(10) NOT NULL,
+  `UserID` int(11) NOT NULL,
   `OrderDate` date NOT NULL,
-  `WarehouseID` int(10) NOT NULL,
-  `TotalAmount` double NOT NULL
+  `TotalQuantity` int(11) NOT NULL,
+  `TotalAmount` double NOT NULL,
+  `Status` varchar(55) NOT NULL,
+  `Remarks` varchar(55) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`OrderID`, `CustomerID`, `OrderDate`, `WarehouseID`, `TotalAmount`) VALUES
-(22, 1, '2024-10-09', 1, 7500),
-(23, 3, '2024-10-13', 1, 7500),
-(24, 1, '2024-10-16', 1, 2300),
-(25, 3, '2024-10-16', 1, 3450),
-(27, 1, '2024-10-18', 1, 7500),
-(28, 1, '2024-10-25', 1, 37500);
+INSERT INTO `orders` (`OrderID`, `CustomerID`, `UserID`, `OrderDate`, `TotalQuantity`, `TotalAmount`, `Status`, `Remarks`) VALUES
+(51, 1, 7, '2024-12-09', 6, 30000, 'Pending', ''),
+(52, 3, 7, '2024-12-09', 5, 37500, 'Pending', ''),
+(53, 3, 7, '2024-12-09', 5, 37500, 'Pending', ''),
+(54, 3, 7, '2024-12-09', 5, 37500, 'Pending', ''),
+(55, 7, 7, '2024-12-09', 5, 37500, 'Pending', ''),
+(56, 7, 7, '2024-12-09', 5, 37500, 'Pending', ''),
+(57, 7, 7, '2024-12-09', 5, 37500, 'Pending', ''),
+(62, 3, 5, '2024-12-09', 50, 375000, 'Pending', ''),
+(63, 9, 5, '2024-12-10', 10, 60000, 'Pending', ''),
+(64, 1, 5, '2024-12-10', 4, 27000, 'Pending', ''),
+(65, 1, 5, '2024-12-10', 1, 7500, 'Pending', ''),
+(66, 8, 5, '2024-12-10', 11, 64500, 'Pending', ''),
+(67, 10, 5, '2024-12-10', 10, 5000, 'Pending', ''),
+(68, 9, 5, '2024-12-10', 13, 76050, 'Pending', ''),
+(69, 3, 5, '2024-12-10', 6, 8115, 'Cancelled', 'Order Cancelled'),
+(70, 6, 5, '2024-12-10', 10, 20000, 'Cancelled', 'Order Cancelled'),
+(71, 6, 5, '2024-12-10', 5, 28000, 'Pending', ''),
+(72, 6, 5, '2024-12-10', 7, 3500, 'Pending', ''),
+(73, 6, 5, '2024-12-10', 30, 60000, 'Pending', ''),
+(74, 1, 5, '2024-12-10', 5, 37500, 'Cancelled', 'Order Cancelled'),
+(75, 1, 5, '2024-12-12', 25, 187500, 'Pending', ''),
+(76, 7, 5, '2024-12-13', 5, 4250, 'Pending', '');
 
 -- --------------------------------------------------------
 
@@ -128,7 +186,7 @@ INSERT INTO `orders` (`OrderID`, `CustomerID`, `OrderDate`, `WarehouseID`, `Tota
 
 CREATE TABLE `products` (
   `ProductID` int(10) NOT NULL,
-  `SKU` varchar(50) NOT NULL,
+  `Barcode` varchar(50) NOT NULL,
   `Name` varchar(100) NOT NULL,
   `Description` varchar(100) NOT NULL,
   `UnitPrice` double NOT NULL,
@@ -139,7 +197,7 @@ CREATE TABLE `products` (
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`ProductID`, `SKU`, `Name`, `Description`, `UnitPrice`, `SupplierID`) VALUES
+INSERT INTO `products` (`ProductID`, `Barcode`, `Name`, `Description`, `UnitPrice`, `SupplierID`) VALUES
 (7, 'PROD0001', 'Ryzen 5 3400G', '4cores 8threads 3.90ghz speed APU', 7500, 2),
 (8, 'PROD0002', 'B450 Biostar Motherboard', 'DDR4 2slots  M.2 Slot', 4500, 2),
 (9, 'PROD0003', 'Ripjaws Ram', '16gb DDR4 3200mhz', 3200, 1),
@@ -147,7 +205,17 @@ INSERT INTO `products` (`ProductID`, `SKU`, `Name`, `Description`, `UnitPrice`, 
 (11, 'PROD0005', 'Ramsta M.2 SSD', 'M.2 SSD 128gb', 1000, 1),
 (12, 'PROD0006', 'LED LG Monitor 75hz', 'LG Monitor 75hz, 21 inches LED', 4950, 1),
 (13, 'PROD0007', 'INPLAY Tempered Glass Casing', 'Tempered Glass Casing', 1150, 1),
-(14, 'PROD0007', 'Fantech X9 Thor Gaming mouse', '2m clicks. LED light', 650, 1);
+(14, 'PROD0007', 'Fantech X9 Thor Gaming mouse', '2m clicks. LED light', 650, 1),
+(16, '7788823', 'prodtest', 'proddesctest', 5500, 1),
+(17, '2138238', 'testname', 'testdescription', 1502, 1),
+(18, '888999', 'testprod1update', 'testdescription', 500, 2),
+(19, '777331', 'testprod12', 'testdescription123', 350, 2),
+(20, '9998881', 'testprod123', 'descriptiontest', 350, 1),
+(21, 'PROD2313', 'TEST', 'TESTDESC', 123, 1),
+(22, 'PROD2314', 'JACK', 'testdescription', 2000, 1),
+(23, '2138238', 'RYZEN 5300', 'testdescription', 5600, 1),
+(24, '777330', 'INTEL i9 14800', 'testdescription', 5600, 6),
+(25, '111222333', 'product2024', 'descriptiontest', 850, 1);
 
 -- --------------------------------------------------------
 
@@ -169,7 +237,9 @@ CREATE TABLE `supplier` (
 INSERT INTO `supplier` (`SupplierID`, `Name`, `Address`, `Phone`) VALUES
 (1, 'ABC COMPANY', 'TORIL', '87898'),
 (2, 'XYZ COMPANY', 'TORIL', '321'),
-(3, 'TEST test', 'TORIL test', '123123 test');
+(3, 'TEST test', 'TORIL test', 'test'),
+(5, 'suppliertest1 spiderman', 'New York, Brooklyn', '82893284'),
+(6, 'MCDO', 'TORIL', '9929393');
 
 -- --------------------------------------------------------
 
@@ -191,7 +261,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `reset_token`) VALUES
 (5, 'admin', '$2y$10$X8gNeZEvV6lsxZZR87G5yuIdB0cP1qLdQk.mskoEoxBFDPFYHe3ma', 'ritche2000@gmail.com', 'dec06cbd6dce4f06013c46e6ab3f52d9'),
-(6, 'test', '$2y$10$hFDsCB.UH9j.5489ie2QFuN8YqHOLvAMkOF84qHrUiSjROfQtYVFW', 'celega8565@avzong.com', 'c28e5d4a0a0f869cfe8810c4e9e959ec'),
+(6, 'ritche', '$2y$10$hFDsCB.UH9j.5489ie2QFuN8YqHOLvAMkOF84qHrUiSjROfQtYVFW', 'celega8565@avzong.com', 'c28e5d4a0a0f869cfe8810c4e9e959ec'),
 (7, 'superadmin', '$2y$10$LV3kio/T359f.doVzPQO5u6a.mwPKV30L0768Xkujk3rw/RxpglF6', 'superadmin@gmail.com', '');
 
 -- --------------------------------------------------------
@@ -211,8 +281,7 @@ CREATE TABLE `warehouse` (
 --
 
 INSERT INTO `warehouse` (`WarehouseID`, `Name`, `Location`) VALUES
-(1, 'Warehouse 1', 'Toril'),
-(2, 'Warehouse 2', 'Matina');
+(3, 'SmartStock', 'Toril, Davao City');
 
 --
 -- Indexes for dumped tables
@@ -229,14 +298,14 @@ ALTER TABLE `customers`
 --
 ALTER TABLE `inventory`
   ADD PRIMARY KEY (`InventoryID`),
-  ADD KEY `WarehouseID` (`WarehouseID`),
-  ADD KEY `ProductID` (`ProductID`);
+  ADD KEY `ProductID` (`ProductID`),
+  ADD KEY `WarehouseID` (`WarehouseID`);
 
 --
--- Indexes for table `orderitem`
+-- Indexes for table `orderdetails`
 --
-ALTER TABLE `orderitem`
-  ADD PRIMARY KEY (`OrderItemID`),
+ALTER TABLE `orderdetails`
+  ADD PRIMARY KEY (`OrderDetail_ID`),
   ADD KEY `OrderID` (`OrderID`),
   ADD KEY `ProductID` (`ProductID`);
 
@@ -246,7 +315,7 @@ ALTER TABLE `orderitem`
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`OrderID`),
   ADD KEY `CustomerID` (`CustomerID`),
-  ADD KEY `WarehouseID` (`WarehouseID`);
+  ADD KEY `UserID` (`UserID`);
 
 --
 -- Indexes for table `products`
@@ -281,37 +350,37 @@ ALTER TABLE `warehouse`
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `CustomerID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `CustomerID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `inventory`
 --
 ALTER TABLE `inventory`
-  MODIFY `InventoryID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `InventoryID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
--- AUTO_INCREMENT for table `orderitem`
+-- AUTO_INCREMENT for table `orderdetails`
 --
-ALTER TABLE `orderitem`
-  MODIFY `OrderItemID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+ALTER TABLE `orderdetails`
+  MODIFY `OrderDetail_ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `OrderID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `OrderID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `ProductID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `ProductID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `supplier`
 --
 ALTER TABLE `supplier`
-  MODIFY `SupplierID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `SupplierID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -323,7 +392,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `warehouse`
 --
 ALTER TABLE `warehouse`
-  MODIFY `WarehouseID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `WarehouseID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
@@ -333,22 +402,22 @@ ALTER TABLE `warehouse`
 -- Constraints for table `inventory`
 --
 ALTER TABLE `inventory`
-  ADD CONSTRAINT `inventory_ibfk_1` FOREIGN KEY (`WarehouseID`) REFERENCES `warehouse` (`WarehouseID`),
-  ADD CONSTRAINT `inventory_ibfk_2` FOREIGN KEY (`ProductID`) REFERENCES `products` (`ProductID`);
+  ADD CONSTRAINT `inventory_ibfk_2` FOREIGN KEY (`ProductID`) REFERENCES `products` (`ProductID`),
+  ADD CONSTRAINT `inventory_ibfk_3` FOREIGN KEY (`WarehouseID`) REFERENCES `warehouse` (`WarehouseID`);
 
 --
--- Constraints for table `orderitem`
+-- Constraints for table `orderdetails`
 --
-ALTER TABLE `orderitem`
-  ADD CONSTRAINT `orderitem_ibfk_1` FOREIGN KEY (`OrderID`) REFERENCES `orders` (`OrderID`),
-  ADD CONSTRAINT `orderitem_ibfk_2` FOREIGN KEY (`ProductID`) REFERENCES `products` (`ProductID`);
+ALTER TABLE `orderdetails`
+  ADD CONSTRAINT `orderdetails_ibfk_1` FOREIGN KEY (`OrderID`) REFERENCES `orders` (`OrderID`),
+  ADD CONSTRAINT `orderdetails_ibfk_2` FOREIGN KEY (`ProductID`) REFERENCES `products` (`ProductID`);
 
 --
 -- Constraints for table `orders`
 --
 ALTER TABLE `orders`
   ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`CustomerID`) REFERENCES `customers` (`CustomerID`),
-  ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`WarehouseID`) REFERENCES `warehouse` (`WarehouseID`);
+  ADD CONSTRAINT `orders_ibfk_3` FOREIGN KEY (`UserID`) REFERENCES `users` (`id`);
 
 --
 -- Constraints for table `products`
