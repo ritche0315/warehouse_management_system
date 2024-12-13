@@ -53,19 +53,19 @@ use App\Helpers\Session;
     </div>
     <?php include(APPDIR.'views/modals/orderdetails.php');?>
     <?php include(APPDIR.'views/modals/orderupdate.php');?>
-    <script>
-        const orders = <?php echo json_encode($orders);?>;
-        const ordersTableEl = document.querySelector('#ordersTable');
-        const tbody = ordersTableEl.children[1];
-        
-        const orderDetailsTableEl = document.querySelector('#orderDetailsTable');
-        const orderUpdateTableEl = document.querySelector('#orderUpdateTable');
-        const updateOrdertotalItemsEl = document.querySelector('#updateOrder-totalItems');
-        const updateOrdertotalAmountEl = document.querySelector('#updateOrder-totalAmount');
-        const orderDateEl = document.querySelector('#orderDate');
+<script>
+    const orders = <?php echo json_encode($orders);?>;
+    const ordersTableEl = document.querySelector('#ordersTable');
+    const tbody = ordersTableEl.children[1];
+    
+    const orderDetailsTableEl = document.querySelector('#orderDetailsTable');
+    const orderUpdateTableEl = document.querySelector('#orderUpdateTable');
+    const updateOrdertotalItemsEl = document.querySelector('#updateOrder-totalItems');
+    const updateOrdertotalAmountEl = document.querySelector('#updateOrder-totalAmount');
+    const orderDateEl = document.querySelector('#orderDate');
 
     const orderIdEl = document.querySelector('#orderUpdate-orderId');
-
+    let selectedRow = null; // Variable to keep track of the selected row  
     var updateOrderItems = [];
 
     // Event delegation for selecting a row  
@@ -125,7 +125,7 @@ use App\Helpers\Session;
                     <td>${orderdetail.PriceSold}</td>
                     <td class='qty'>${orderdetail.Quantity}</td>
                     <td>${orderdetail.SubTotal}</td>
-                    <td><button type='button' class='btn btn-danger'><i class='fa fa-minus'></i></button></td>
+                    <td><button type='button' class='btn btn-danger btn-remove'><i class='fa fa-minus'></i></button></td>
                 </tr>`
             })
             tbody2.innerHTML = html;
@@ -213,49 +213,106 @@ function populateOrdersToOrdersTable() {
 
     // Add click event listener to quantity cells
     const orderUpdateTbody = orderUpdateTableEl.children[1];
-    orderUpdateTbody.addEventListener('click', function (e) {
-        if (e.target && e.target.classList.contains('qty')) {
-            const qtyCell = e.target;
-            const currentQty = parseInt(qtyCell.innerText) || 0;
-            const newQty = prompt('Enter new quantity:', currentQty);
 
-            if (newQty !== null) {
-                const quantity = parseInt(newQty);
-                if (!isNaN(quantity) && quantity > 0) {
-                    qtyCell.innerText = quantity;
-
-                    // Update the total for this row
-                    const row = qtyCell.closest('tr');
-                    const unitPrice = parseFloat(row.children[3].innerText);
-                    const total = unitPrice * quantity;
-                    row.children[5].innerText = total.toFixed(2);
-
-
-                    const orderitemId = row.children[0].innerText//get orderdetail_id
-
-                        let isExist = false;
-                        for(let i=0; i < updateOrderItems.length; i++){
-                            if(updateOrderItems[i].orderItemId == orderitemId){
-                                isExist = true;
-                                updateOrderItems[i].quantity = quantity;
-                                updateOrderItems[i].subtotal = total;
-                                break;
+     // Event delegation for selecting a row  
+    //  orderUpdateTbody.addEventListener('click', function (e) {  
+    //     const row = e.target.closest('tr'); // Get clicked row  
+    //     if (row) {  
+    //         // Highlight the selected row  
+    //         if (selectedRow) {  
+    //             selectedRow.classList.remove('selected'); // Remove highlight from previously selected row  
+    //         }  
+    //         selectedRow = row; // Assign the new selected row  
+    //         selectedRow.classList.add('selected'); // Highlight the currently selected row  
+    //     }  
+    // });  
+ 
+    (()=>{
+        
+        orderUpdateTbody.addEventListener('click', function (e) {
+            const selectedRowOnUpdateTable = e.target.parentElement.parentElement; // Traverse to the row  
+            
+            // Get the first cell in that row  
+            // const updateOrderid = updateRow.cells[0].innerText; // cell index starts from 0 
+          
+            if (e.target && e.target.classList.contains('qty')) {
+                const qtyCell = e.target;
+                const currentQty = parseInt(qtyCell.innerText) || 0;
+                const newQty = prompt('Enter new quantity:', currentQty);
+    
+                if (newQty !== null) {
+                    const quantity = parseInt(newQty);
+                    if (!isNaN(quantity) && quantity > 0) {
+                        qtyCell.innerText = quantity;
+    
+                        // Update the total for this row
+                        const row = qtyCell.closest('tr');
+                        const unitPrice = parseFloat(row.children[3].innerText);
+                        const total = unitPrice * quantity;
+                        row.children[5].innerText = total.toFixed(2);
+    
+    
+                        const orderitemId = row.children[0].innerText//get orderdetail_id
+    
+                            let isExist = false;
+                            for(let i=0; i < updateOrderItems.length; i++){
+                                if(updateOrderItems[i].orderItemId == orderitemId){
+                                    isExist = true;
+                                    updateOrderItems[i].quantity = quantity;
+                                    updateOrderItems[i].subtotal = total;
+                                    break;
+                                }
                             }
-                        }
-
-                        if(!isExist){
-                            updateOrderItems.push({'orderItemId': orderitemId, 'quantity': quantity, 'unitPrice': unitPrice, 'subtotal':total})
-                        }
-                    
-
-                    calculateTotalItemsAndTotalAmount(); // Update overall totals
-                } else {
-                    alert('Please enter a valid quantity.');
+    
+                            if(!isExist){
+                                updateOrderItems.push({'orderItemId': orderitemId, 'quantity': quantity, 'unitPrice': unitPrice, 'subtotal':total})
+                            }
+                        
+    
+                        calculateTotalItemsAndTotalAmount(); // Update overall totals
+                    } else {
+                        alert('Please enter a valid quantity.');
+                    }
                 }
             }
-        }
-    });
+          
+    
+            
+        });
 
+    })();
+
+
+    (()=>{
+        // Event listener for removing a row when the remove button is clicked
+        orderUpdateTbody.addEventListener('click', function (e) {
+            const button = e.target.closest('.btn-remove'); // Check if the clicked element is a remove button
+            if (button) {
+                const row = button.closest('tr'); // Get the row containing the button
+                if (row) {
+                    // Confirm before removing the row
+                    if (confirm('Are you sure you want to remove this item?')) {
+                        row.remove(); // Remove the row from the table
+
+                        // Optionally, update the order items array
+                        const orderitemId = row.children[0].innerText; // Get the order item ID
+                        // updateOrderItems = updateOrderItems.filter(item => item.orderItemId !== orderitemId);
+
+                
+                        fetch('/orderdetails/remove_orderdetail/'+orderitemId)
+                        .then(response => response.json())
+                        .then(responseData => {
+                            console.log(responseData)
+                        })
+                        .catch(err=> console.log(err))
+                        // Recalculate totals
+                        calculateTotalItemsAndTotalAmount();
+                    }
+                }
+            }
+        });
+
+    })();
     function calculateTotalItemsAndTotalAmount() {  
         const rows = Array.from(orderUpdateTbody.rows); // Get the rows from tbody  
 
@@ -273,6 +330,7 @@ function populateOrdersToOrdersTable() {
         updateOrdertotalAmountEl.innerText = totalAmount.toFixed(2);  
     } 
 
+  
 
     //save btn clicked
     document.querySelector('#updateOrder-btnSave').addEventListener('click',()=>{

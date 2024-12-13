@@ -15,7 +15,7 @@ include(APPDIR.'views/layouts/sbnav.php');
                 
                 <p><a href="/inventory/add" class="btn btn-xs btn-info">Stock-IN</a></p>
 
-                <div class='table-responsive'>
+                <div class='table-responsive' style='font-size: .8em'>
                     <table class='table table-striped table-hover table-bordered'>
                     <tr>
                         <th>ID</th>
@@ -24,8 +24,11 @@ include(APPDIR.'views/layouts/sbnav.php');
                         <th>Barcode</th>
                         <th>Name</th>
                         <th>Description</th>
+                        <th>Unit</th>
                         <th>Unit Price</th>
                         <th>Quantity</th>
+                        <th>ReOrderLevel</th>
+                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                     <?php foreach($inventories as $row) { ?>
@@ -36,10 +39,13 @@ include(APPDIR.'views/layouts/sbnav.php');
                         <td><?=htmlentities($row->Barcode);?></td>
                         <td><?=htmlentities($row->Name);?></td>
                         <td><?=htmlentities($row->Description);?></td>
+                        <td><?=htmlentities($row->Unit);?></td>
                         <td><?=htmlentities($row->UnitPrice);?></td>
                         <td><?=htmlentities($row->Quantity);?></td>
+                        <td><?=htmlentities($row->ReOrderLevel);?></td>
+                        <td><?=htmlentities($row->Status);?></td>
                         <td>
-                            <a href="/inventory/edit/<?=$row->InventoryID;?>" class="btn btn-xs btn-warning"><i class='fa fa-edit text-light'></i></a>
+                            <a href="/inventory/edit/<?=$row->InventoryID;?>" class="btn btn-xs btn-warning" style='font-size: 8px;'><i class='fa fa-edit text-light'></i></a>
                             <?php if($userloggedIn == "superadmin"){?>
                             <a href="javascript:del('<?=$row->InventoryID;?>','<?=$row->InventoryID;?>')" class="btn btn-xs btn-danger"><i class='fa fa-trash'></i></a>
                             <?php }?>

@@ -58,6 +58,20 @@ class OrderDetails extends BaseController{
         
     }
 
+    public function remove_orderdetail($id){
+
+        $fetchedOrderDetail = $this->orderDetail->get_orderdetail($id);
+
+        //THROW 404 IF NOT FOUND
+        if ($fetchedOrderDetail == null) {
+            Url::redirect('/404');
+        }
+
+        $where = ['OrderDetail_ID'=> $id];
+        $this->orderDetail->delete($where);
+        
+        echo json_encode(['message'=> 'item removed']);
+    }
 
     
 }
