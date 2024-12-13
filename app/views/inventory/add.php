@@ -8,9 +8,9 @@ include(APPDIR.'views/layouts/sbnav.php');
     <main>
         <div class="container-fluid px-4">
                <?php include(APPDIR.'views/layouts/errors.php');?>
-                <h1 class="mt-4">Add Inventory</h1>
+                <h1 class="mt-4">Add New Stocks</h1>
                 <ol class="breadcrumb mb-4">
-                    <li class="breadcrumb-item active">Add Inventory form</li>
+                    <li class="breadcrumb-item active">Add New Stocks form</li>
                 </ol>
                 
                 <form method="post">

@@ -14,9 +14,9 @@ class OrderDetails extends BaseController{
     public function __construct(){
         parent::__construct();
 
-        // if (!Session::get('logged_in')) {
-        //     Url::redirect('/admin/login');
-        // }
+        if (!Session::get('logged_in')) {
+            Url::redirect('/admin/login');
+        }
 
         // only authorized user can access this route(admin & superadmin)
         // if(Session::get('user_username') != "admin" 

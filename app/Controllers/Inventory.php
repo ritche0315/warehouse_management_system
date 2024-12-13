@@ -19,9 +19,9 @@ class Inventory extends BaseController{
         parent::__construct();
 
         
-        // if (!Session::get('logged_in')) {
-        //     Url::redirect('/admin/login');
-        // }
+        if (!Session::get('logged_in')) {
+            Url::redirect('/admin/login');
+        }
         
         // if(Session::get('user_username') != 'admin'){
         //     if(Session::get('user_username') != 'superadmin'){

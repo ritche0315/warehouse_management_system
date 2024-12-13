@@ -14,15 +14,15 @@ use App\Helpers\Session;
                     <p class="mt-3 fw-light fs-3">Add Order</p>
                 </div>
                 
-                <div class="col">
+                <div class="col p-0 me-3" style="background-color: #F2F4F3;">
                     <p class='bg-dark text-light p-3'>Orderline</p>
                     <div class="mb-3 px-3">
                         <label for="search-barcode" class='form-label'>Search/Scan Barcode:</label>
                         <input type='text' name="barcode" id="search-barcode" class='form-control'/>
                     </div>
-                    <div class="mb-3 px-3">
-                        <div class="table-responsive border border-normal" style='max-height: 400px; overflow-y: auto;'>
-                            <table class="table table-bordered" id="orderTable">
+                    <div class="mb-3 px-3" >
+                        <div class="table-responsive border border-normal " style='min-height: 300px; max-height: 400px; overflow-y: auto; background-color:white;'>
+                            <table class="table table-bordered h-100" id="orderTable" >
                                 <thead>
                                     <th>Barcode</th>
                                     <th>Item Name</th>
@@ -39,17 +39,13 @@ use App\Helpers\Session;
                         <button type="button" class='btn btn-danger' id='btnVoid'>VOID</button>
                     </div>
                 </div>
-                <div class="col-md-4 px-0" style="background-color: #F2F4F3;">
-                    <div class="bg-dark">
-                        <label for="totalItems" class='form-label text-light p-3'>Total items:</label>
-                        <label class='form-label text-light' id='totalItems'>0</label>
+                <div class="col-md-4 px-0 h-100" style="background-color: #F2F4F3;">
+                    <p class='text-light p-3 bg-dark'>Order Date:</p>
+                    <div class="p-3">
+                        <label for="orderDate" class="form-label">Choose Date:</label>
+                        <input type="date" name="orderDate" id="orderDate" class='form-control'>
                     </div>
-                    <div class="bg-warning">
-                        <label for="totalAmount" class='form-label p-3 fs-4 fw-bold'>Total Amount:</label>
-                        <label class='form-label fs-4 fw-bold' id='totalAmount'>0.00</label>
-                    </div>
-
-                    <p class='text-light p-3 bg-dark'>Customer Information</p>
+                    <p class='text-light p-3 bg-dark mt-3'>Customer Information</p>
                     <div class="mb-3 px-3">
                         <label for="select-customer" class='form-label'>Choose Customer:</label>
                         <select name="select-customer" id="select-customer" class='form-select'>
@@ -59,8 +55,17 @@ use App\Helpers\Session;
                             }?>
                         </select>
                     </div>
-                    <div class="px-3 mb-5 d-flex justify-content-end">
-                        <button type="button" class='btn btn-success fs-4' id='btnSubmitOrder'>Submit Order</button>
+
+                    <div class="bg-dark mt-5">
+                        <label for="totalItems" class='form-label text-light p-3'>Total items:</label>
+                        <label class='form-label text-light' id='totalItems'>0</label>
+                    </div>
+                    <div class="bg-warning">
+                        <label for="totalAmount" class='form-label p-3 fs-4 fw-bold'>Total Amount:</label>
+                        <label class='form-label fs-4 fw-bold' id='totalAmount'>0.00</label>
+                    </div>
+                    <div class="p-3 mb-5 d-flex justify-content-end">
+                        <button type="button" class='btn btn-success fs-5' id='btnSubmitOrder'><i class='fa fa-save me-1'></i>Submit</button>
                     </div>
                 </div>
             </div>
@@ -85,7 +90,7 @@ use App\Helpers\Session;
     const totalItemsEl = document.querySelector('#totalItems');  
     const totalAmountEl = document.querySelector('#totalAmount');  
     const selectCustomerEl = document.querySelector('#select-customer');
-    
+    const orderDateEl = document.querySelector('#orderDate');
     let selectedRow = null; // Variable to keep track of the selected row  
 
     function calculateTotalItemsAndTotalAmount() {  
@@ -209,11 +214,16 @@ use App\Helpers\Session;
     });
 
     btnSubmitOrder.addEventListener('click', ()=>{
+        
         if(totalAmountEl.innerText == "0.00"){
             alert('Submit order failed, Orderline is empty');
             return;
         }
-        
+        if(orderDateEl.value == null || orderDateEl.value == 0){
+            alert('Please select a date')
+            return;
+        }
+
         if(selectCustomerEl.value == '0'){
             alert('Please select a customer');
             return;
@@ -223,7 +233,8 @@ use App\Helpers\Session;
         const order = {
             'totalAmount': totalAmountEl.innerText,
             'totalItems': totalItemsEl.innerText,
-            'customerId': selectCustomerEl.value
+            'customerId': selectCustomerEl.value,
+            'orderDate': orderDateEl.value
         }
 
         

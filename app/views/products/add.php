@@ -20,8 +20,8 @@ include(APPDIR.'views/layouts/sbnav.php');
         <div class="col-md-6">
 
             <div class="control-group">
-                <label class="control-label" for="sku">SKU</label>
-                <input class="form-control" id="sku" type="text" name="sku" value="<?=(isset($_POST['sku']) ? $_POST['sku'] : '');?>" required  />
+                <label class="control-label" for="sku">Barcode</label>
+                <input class="form-control" id="barcode" type="text" name="barcode" value="<?=(isset($_POST['barcode']) ? $_POST['barcode'] : '');?>" required  />
             </div>
 
             <div class="control-group">
@@ -71,12 +71,12 @@ include(APPDIR.'views/layouts/sbnav.php');
         <footer class="py-4 bg-light mt-auto">
             <div class="container-fluid px-4">
                 <div class="d-flex align-items-center justify-content-between small">
-                    <div class="text-muted">Copyright &copy; Your Website 2023</div>
-                    <div>
+                    <div class="text-muted">Copyright &copy; Your Website 2024</div>
+                    <!-- <div>
                         <a href="#">Privacy Policy</a>
                         &middot;
                         <a href="#">Terms &amp; Conditions</a>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </footer>

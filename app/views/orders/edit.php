@@ -77,6 +77,7 @@ use App\Helpers\Session;
                                                     ?>
                                                 </select>
                                             </div>
+                                            
                                             <div class="control-group">
                                                 <label for="selectProduct" class='control-label'>Product</label>
                                                 <select name="selectProduct" id="selectProduct" class='form-select' onchange='selectProductOnChange()'>

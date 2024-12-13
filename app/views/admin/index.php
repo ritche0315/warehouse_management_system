@@ -76,7 +76,7 @@ include(APPDIR.'views/layouts/errors.php');
         <div class="row mt-5 ms-3">
           <hr>
             <div class="col d-flex align-items-center flex-column">
-                <h3 class='fw-light'>View Data Order items</h3>
+                <!-- <h3 class='fw-light'>View Data Order items</h3> -->
                 <div style='width:50%;'>
                   <div style="position: relative; height:30vh; width: 100%;" class='d-flex justify-content-center align-items-center'>
                       <canvas id="myChart"></canvas>
@@ -105,30 +105,30 @@ include(APPDIR.'views/layouts/errors.php');
 
 <script>
 
-  const ctx = document.getElementById('myChart');
-    var reports = <?php echo json_encode($reports); ?>;
+//   const ctx = document.getElementById('myChart');
+//     var reports = </?php echo json_encode($reports); ?>;
  
     
-    var orderitems = <?php echo json_encode($orderitems); ?>;
-    const labels = orderitems.map(item => item.Name);
-    const data = orderitems.map(item => item.TotalQuantity);
+//     var orderitems = </?php echo json_encode($orderitems); ?>;
+//     const labels = orderitems.map(item => item.Name);
+//     const data = orderitems.map(item => item.TotalQuantity);
 
-new Chart(ctx, {
-  type: 'bar',
-  data: {
-    labels: labels,
-    datasets: [{
-      label: '# Order items',
-      data: data,
-      borderWidth: 1
-    }]
-  },
-  options: {
-    scales: {
-      y: {
-        beginAtZero: true
-      }
-    }
-  }
-});
+// new Chart(ctx, {
+//   type: 'bar',
+//   data: {
+//     labels: labels,
+//     datasets: [{
+//       label: '# Order items',
+//       data: data,
+//       borderWidth: 1
+//     }]
+//   },
+//   options: {
+//     scales: {
+//       y: {
+//         beginAtZero: true
+//       }
+//     }
+//   }
+// });
 </script>

@@ -21,9 +21,9 @@ class Orders extends BaseController{
     public function __construct(){
         parent::__construct();
 
-        // if (! Session::get('logged_in')) {
-        //     Url::redirect('/admin/login');
-        // }
+        if (! Session::get('logged_in')) {
+            Url::redirect('/admin/login');
+        }
 
         $this->customer = new Customer();
         $this->order = new Order();
@@ -73,7 +73,7 @@ class Orders extends BaseController{
 
             $totalAmount = $decodedjson->order->totalAmount;
             $totalItems = $decodedjson->order->totalItems;
-            $orderDate = date('Y-m-d');
+            $orderDate = $decodedjson->order->orderDate;
             $userid = Session::get('user_id');
             $customerid = $decodedjson->order->customerId;
             
@@ -120,18 +120,18 @@ class Orders extends BaseController{
                 $this->orderDetail->insert($orderDetailsData);
 
 
-                //get inventory available stock
-                $inventoryStock = $this->inventory->get_inventory_by_barcode($barcode);
+                // //get available stock and update stock qty (inventory)
+                // $inventoryStock = $this->inventory->get_inventory_by_barcode($barcode);
 
-                $newStockValue = $inventoryStock->Quantity - $quantity;
+                // $newStockValue = $inventoryStock->Quantity - $quantity;
 
-                $where = [
-                    "ProductID" => $inventoryStock->ProductID
-                ];
+                // $where = [
+                //     "ProductID" => $inventoryStock->ProductID
+                // ];
                 
-                $inventoryData = ["Quantity" => $newStockValue];
+                // $inventoryData = ["Quantity" => $newStockValue];
 
-                $this->inventory->update($inventoryData, $where);
+                // $this->inventory->update($inventoryData, $where);
             }
 
             echo json_encode(["message"=>"Orded Added"]);
@@ -175,6 +175,7 @@ class Orders extends BaseController{
             $totalItems = $decodedjson->order->totalItems;
             $customer = $decodedjson->order->customer;
             $orderId = $decodedjson->order->orderId;
+            $orderDate = $decodedjson->order->orderDate;
             // echo json_encode(["order"=>[$orderId, $totalAmount, $totalItems, $customer], "updateOrderItems"=>$updateOrderItems]);
             // return;
 
@@ -227,9 +228,10 @@ class Orders extends BaseController{
             //order
             
             $dataOrder = [
+                "OrderDate"=>$orderDate,
                 "CustomerID"=>$customer,
                 "TotalQuantity"=>$totalItems,
-                "TotalAmount"=> $totalAmount
+                "TotalAmount"=> $totalAmount,
             ];
 
             $where = ["OrderID"=>$orderId];

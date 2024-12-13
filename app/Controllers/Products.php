@@ -17,15 +17,15 @@ class Products extends BaseController{
         parent::__construct();
 
         
-        // if (!Session::get('logged_in')) {
-        //     Url::redirect('/admin/login');
-        // }
+        if (!Session::get('logged_in')) {
+            Url::redirect('/admin/login');
+        }
 
-        // if(Session::get('user_username') != 'admin'){
-        //     if(Session::get('user_username') != 'superadmin'){
-        //         Url::redirect('/orders');
-        //     }
-        // }
+        if(Session::get('user_username') != 'admin'){
+            if(Session::get('user_username') != 'superadmin'){
+                Url::redirect('/orders');
+            }
+        }
 
         $this->product = new Product();
         $this->supplier = new Supplier();
@@ -54,7 +54,7 @@ class Products extends BaseController{
         if(isset($_POST['submit'])){
             
             //payloads
-            $sku = (isset($_POST['sku']) ? $_POST['sku'] : null);
+            $barcode = (isset($_POST['barcode']) ? $_POST['barcode'] : null);
             $name = (isset($_POST['name']) ? $_POST['name'] : null);
             $description = (isset($_POST['description']) ? $_POST['description'] : null);
             $unitPrice = (isset($_POST['unitPrice']) ? $_POST['unitPrice'] : null);
@@ -72,7 +72,7 @@ class Products extends BaseController{
             //check errors
             if(count($errors) == 0){
                 $data = [
-                    'SKU'=> $sku,
+                    'Barcode'=> $barcode,
                     'Name'=>$name,
                     'Description'=>$description,
                     'UnitPrice'=> $unitPrice,
@@ -112,7 +112,7 @@ class Products extends BaseController{
 
         if (isset($_POST['submit'])) {
 
-            $sku = (isset($_POST['sku']) ? $_POST['sku'] : null);
+            $sku = (isset($_POST['barcode']) ? $_POST['barcode'] : null);
             $name = (isset($_POST['name']) ? $_POST['name'] : null);
             $description = (isset($_POST['description']) ? $_POST['description'] : null);
             $unitPrice = (isset($_POST['unitPrice']) ? $_POST['unitPrice'] : null);
@@ -122,7 +122,7 @@ class Products extends BaseController{
             if (count($errors) == 0) {
 
                 $data = [
-                    'SKU'=> $sku,
+                    'Barcode'=> $sku,
                     'Name'=>$name,
                     'Description'=>$description,
                     'UnitPrice'=> $unitPrice,

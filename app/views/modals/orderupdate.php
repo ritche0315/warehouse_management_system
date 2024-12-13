@@ -18,14 +18,20 @@
             </div>
             <div class="card-body">
                 <div class="mb-2">
-                     <div class="control-group">
-                        <label for="orderUpdateCustomer" class="form-label">Customer:</label>
-                        <select name="orderUpdateCustomer" id="orderUpdateCustomer" class='form-select'>
-                            <option value='0' selected>Choose...</option>
-                            <?php   foreach($customers as $customer){
-                                echo "<option value='".$customer->CustomerID."'>".$customer->FirstName.' '.$customer->LastName."</option>";
-                            }?>
-                        </select>
+                     <div class="d-flex align-items-center gap-2">
+                      <div class="control-group w-50">
+                          <label for="orderUpdateCustomer" class="form-label">Customer:</label>
+                          <select name="orderUpdateCustomer" id="orderUpdateCustomer" class='form-select'>
+                              <option value='0' selected>Choose...</option>
+                              <?php   foreach($customers as $customer){
+                                  echo "<option value='".$customer->CustomerID."'>".$customer->FirstName.' '.$customer->LastName."</option>";
+                              }?>
+                          </select>
+                      </div>
+                      <div class="control-group w-50">
+                        <label for="orderDate" class="form-label flex-fill">Order Date</label>
+                        <input type="date" name="orderDate" id="orderDate" class='form-control'>
+                      </div>
                      </div>
                 </div>
                 <div class="table-responsive" id="orderUpdateTableWrapper">

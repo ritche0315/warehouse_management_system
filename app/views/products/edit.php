@@ -20,8 +20,8 @@ include(APPDIR.'views/layouts/sbnav.php');
         <div class="col-md-6">
 
             <div class="control-group">
-                <label class="control-label" for="sku">SKU</label>
-                <input class="form-control" id="sku" type="text" name="sku" value="<?=$product->SKU;?>" required  />
+                <label class="control-label" for="barcode">Barcode</label>
+                <input class="form-control" id="barcode" type="text" name="barcode" value="<?=$product->Barcode;?>" required  />
             </div>
 
             <div class="control-group">

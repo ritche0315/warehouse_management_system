@@ -5,7 +5,7 @@ use System\BaseModel;
 class Inventory extends BaseModel{
 
     public function getInventories(){
-        return $this->db->select("inventory.InventoryID, products.ProductID, products.SKU, products.Name, products.Description, products.UnitPrice, inventory.Quantity, warehouse.WarehouseID, warehouse.Name as \"WarehouseName\", warehouse.Location as \"WarehouseLocation\" FROM inventory INNER JOIN products ON inventory.ProductID = products.ProductID INNER JOIN warehouse ON inventory.WarehouseID = warehouse.WarehouseID");
+        return $this->db->select("inventory.InventoryID, products.ProductID, products.Barcode, products.Name, products.Description, products.UnitPrice, inventory.Quantity, warehouse.WarehouseID, warehouse.Name as \"WarehouseName\", warehouse.Location as \"WarehouseLocation\" FROM inventory INNER JOIN products ON inventory.ProductID = products.ProductID INNER JOIN warehouse ON inventory.WarehouseID = warehouse.WarehouseID");
     }
 
     public function insert($data)

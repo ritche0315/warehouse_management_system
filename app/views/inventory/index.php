@@ -13,7 +13,7 @@ include(APPDIR.'views/layouts/sbnav.php');
                     <li class="breadcrumb-item active">Product Stocks</li>
                 </ol>
                 
-                <p><a href="/inventory/add" class="btn btn-xs btn-info">Add Inventory</a></p>
+                <p><a href="/inventory/add" class="btn btn-xs btn-info">Stock-IN</a></p>
 
                 <div class='table-responsive'>
                     <table class='table table-striped table-hover table-bordered'>
@@ -21,7 +21,7 @@ include(APPDIR.'views/layouts/sbnav.php');
                         <th>ID</th>
                         <th>Warehouse Name</th>
                         <th>Warehouse Location</th>
-                        <th>SKU</th>
+                        <th>Barcode</th>
                         <th>Name</th>
                         <th>Description</th>
                         <th>Unit Price</th>
@@ -33,7 +33,7 @@ include(APPDIR.'views/layouts/sbnav.php');
                         <td><?=htmlentities($row->InventoryID);?></td>
                         <td><?=htmlentities($row->WarehouseName);?></td>
                         <td><?=htmlentities($row->WarehouseLocation);?></td>
-                        <td><?=htmlentities($row->SKU);?></td>
+                        <td><?=htmlentities($row->Barcode);?></td>
                         <td><?=htmlentities($row->Name);?></td>
                         <td><?=htmlentities($row->Description);?></td>
                         <td><?=htmlentities($row->UnitPrice);?></td>
@@ -61,12 +61,12 @@ include(APPDIR.'views/layouts/sbnav.php');
         <footer class="py-4 bg-light mt-auto">
             <div class="container-fluid px-4">
                 <div class="d-flex align-items-center justify-content-between small">
-                    <div class="text-muted">Copyright &copy; Your Website 2023</div>
-                    <div>
+                    <div class="text-muted">Copyright &copy; SmartStock 2024</div>
+                    <!-- <div>
                         <a href="#">Privacy Policy</a>
                         &middot;
                         <a href="#">Terms &amp; Conditions</a>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </footer>

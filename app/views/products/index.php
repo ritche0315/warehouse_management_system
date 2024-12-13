@@ -19,7 +19,7 @@ include(APPDIR.'views/layouts/sbnav.php');
                         <table class='table table-striped table-hover table-bordered'>
                         <tr>
                             <th>ID</th>
-                            <th>SKU</th>
+                            <th>Barcode</th>
                             <th>Name</th>
                             <th>Description</th>
                             <th>UnitPrice</th>
@@ -29,7 +29,7 @@ include(APPDIR.'views/layouts/sbnav.php');
                         <?php foreach($products as $row) { ?>
                         <tr>
                             <td><?=htmlentities($row->ProductID);?></td>
-                            <td><?=htmlentities($row->SKU);?></td>
+                            <td><?=htmlentities($row->Barcode);?></td>
                             <td><?=htmlentities($row->Name);?></td>
                             <td><?=htmlentities($row->Description);?></td>
                             <td><?=htmlentities($row->UnitPrice);?></td>

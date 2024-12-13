@@ -50,18 +50,19 @@ use App\Helpers\Session;
                 </div>
             </div>
         </footer>
-</div>
-<?php include(APPDIR.'views/modals/orderdetails.php');?>
-<?php include(APPDIR.'views/modals/orderupdate.php');?>
-<script>
-    const orders = <?php echo json_encode($orders);?>;
-    const ordersTableEl = document.querySelector('#ordersTable');
-    const tbody = ordersTableEl.children[1];
-	
-    const orderDetailsTableEl = document.querySelector('#orderDetailsTable');
-    const orderUpdateTableEl = document.querySelector('#orderUpdateTable');
-    const updateOrdertotalItemsEl = document.querySelector('#updateOrder-totalItems');
-    const updateOrdertotalAmountEl = document.querySelector('#updateOrder-totalAmount');
+    </div>
+    <?php include(APPDIR.'views/modals/orderdetails.php');?>
+    <?php include(APPDIR.'views/modals/orderupdate.php');?>
+    <script>
+        const orders = <?php echo json_encode($orders);?>;
+        const ordersTableEl = document.querySelector('#ordersTable');
+        const tbody = ordersTableEl.children[1];
+        
+        const orderDetailsTableEl = document.querySelector('#orderDetailsTable');
+        const orderUpdateTableEl = document.querySelector('#orderUpdateTable');
+        const updateOrdertotalItemsEl = document.querySelector('#updateOrder-totalItems');
+        const updateOrdertotalAmountEl = document.querySelector('#updateOrder-totalAmount');
+        const orderDateEl = document.querySelector('#orderDate');
 
     const orderIdEl = document.querySelector('#orderUpdate-orderId');
 
@@ -138,7 +139,7 @@ use App\Helpers\Session;
                     // console.log(responseData)
                     document.querySelector('#orderUpdate-orderId').innerText = orderid;
                     document.querySelector('#orderUpdateCustomer').value = responseData.order.CustomerID;
-
+                    orderDateEl.value = responseData.order.OrderDate;
                     calculateTotalItemsAndTotalAmount();
                     const modalOrderUpdate = new bootstrap.Modal('#orderUpdateModal', null);  
                     modalOrderUpdate.show();  
@@ -271,6 +272,9 @@ function populateOrdersToOrdersTable() {
         updateOrdertotalItemsEl.innerText = totalItems;  
         updateOrdertotalAmountEl.innerText = totalAmount.toFixed(2);  
     } 
+
+
+    //save btn clicked
     document.querySelector('#updateOrder-btnSave').addEventListener('click',()=>{
         
         const customerEl = document.querySelector('#orderUpdateCustomer');
@@ -279,11 +283,12 @@ function populateOrdersToOrdersTable() {
         const totalItems = updateOrdertotalItemsEl.innerText;
         const customer = customerEl.value;
         const orderId = orderIdEl.innerText;
+        const orderDate = orderDateEl.value;
 
         let formData = new FormData();
 
         formData.append('data', JSON.stringify({
-            'order': {'orderId': orderId, 'totalAmount': totalAmount, 'totalItems': totalItems, 'customer': customer},
+            'order': {'orderId': orderId, 'totalAmount': totalAmount, 'totalItems': totalItems, 'customer': customer, 'orderDate': orderDate},
             'updateOrderItems': updateOrderItems
         }))
 
