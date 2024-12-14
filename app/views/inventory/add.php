@@ -43,7 +43,7 @@ include(APPDIR.'views/layouts/sbnav.php');
                             
                             <div class="control-group">
                                 <label for="quantity" class="control-label">Quantity</label>
-                                <input type="text" class="form-control" id="quantity" name="quantity" value="<?= (isset($_POST['quantity']) ? $_POST['quantity'] : '');?>" required/>
+                                <input type="number" onkeyup="onKeyUpQunatity()" onchange='onKeyUpQunatity()' class="form-control" id="quantity" name="quantity" value="<?= (isset($_POST['quantity']) ? $_POST['quantity'] : '');?>" required/>
                             </div>
 
                         </div>
@@ -72,5 +72,15 @@ include(APPDIR.'views/layouts/sbnav.php');
         </footer>
     </div>
 </div>
+<script>
+    const quantityInputEl = document.querySelector('#quantity');
+    
+    function onKeyUpQunatity(){
+        if(quantityInputEl.value <= 0 && quantityInputEl.value != ""){
+            alert('Please enter quantity value not less than or equal to 0');
+            quantityInputEl.value = "";
+        }
+    }
 
+</script>
 <?php include(APPDIR.'views/layouts/footer.php');?>

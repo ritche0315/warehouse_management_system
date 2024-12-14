@@ -151,8 +151,11 @@ use App\Helpers\Session;
                 fetch('/inventory/fetch_inventory/'+barcode)
                 .then(response=> response.json())
                 .then(responseData =>{
-                    
                     if(responseData){
+                        if(responseData.Quantity <= 0){
+                            alert('Out of Stock');
+                            return;
+                        }
                         const html = `<tr>  
                             <td>${responseData.Barcode}</td>  
                             <td>${responseData.Name}</td>  

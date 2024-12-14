@@ -13,7 +13,7 @@ include(APPDIR.'views/layouts/sbnav.php');
                     <li class="breadcrumb-item active">Product Stocks</li>
                 </ol>
                 
-                <p><a href="/inventory/add" class="btn btn-xs btn-info">Stock-IN</a></p>
+                <p><a href="/inventory/add" class="btn btn-xs btn-info">Add New Stocks</a></p>
 
                 <div class='table-responsive' style='font-size: .8em'>
                     <table class='table table-striped table-hover table-bordered'>
@@ -29,7 +29,7 @@ include(APPDIR.'views/layouts/sbnav.php');
                         <th>Quantity</th>
                         <th>ReOrderLevel</th>
                         <th>Status</th>
-                        <th>Action</th>
+                        <!-- <th>Action</th> -->
                     </tr>
                     <?php foreach($inventories as $row) { ?>
                     <tr>
@@ -44,12 +44,12 @@ include(APPDIR.'views/layouts/sbnav.php');
                         <td><?=htmlentities($row->Quantity);?></td>
                         <td><?=htmlentities($row->ReOrderLevel);?></td>
                         <td><?=htmlentities($row->Status);?></td>
-                        <td>
-                            <a href="/inventory/edit/<?=$row->InventoryID;?>" class="btn btn-xs btn-warning" style='font-size: 8px;'><i class='fa fa-edit text-light'></i></a>
-                            <?php if($userloggedIn == "superadmin"){?>
-                            <a href="javascript:del('<?=$row->InventoryID;?>','<?=$row->InventoryID;?>')" class="btn btn-xs btn-danger"><i class='fa fa-trash'></i></a>
-                            <?php }?>
-                        </td>
+                        <!-- <td>
+                            <a href="/inventory/edit/</?=$row->InventoryID;?>" class="btn btn-xs btn-warning" style='font-size: 8px;'><i class='fa fa-edit text-light'></i></a>
+                            </?php if($userloggedIn == "superadmin"){?> -->
+                            <!-- <a href="javascript:del('</?=$row->InventoryID;?>','</?=$row->InventoryID;?>')" class="btn btn-xs btn-danger"><i class='fa fa-trash'></i></a>
+                            </?php }?>
+                        </td> -->
                     </tr>
                     <?php } ?>
                     </table>

@@ -121,17 +121,17 @@ class Orders extends BaseController{
 
 
                 // //get available stock and update stock qty (inventory)
-                // $inventoryStock = $this->inventory->get_inventory_by_barcode($barcode);
+                $inventoryStock = $this->inventory->get_inventory_by_barcode($barcode);
 
-                // $newStockValue = $inventoryStock->Quantity - $quantity;
+                $newStockValue = $inventoryStock->Quantity - $quantity;
 
-                // $where = [
-                //     "ProductID" => $inventoryStock->ProductID
-                // ];
+                $where = [
+                    "ProductID" => $inventoryStock->ProductID
+                ];
                 
-                // $inventoryData = ["Quantity" => $newStockValue];
+                $inventoryData = ["Quantity" => $newStockValue];
 
-                // $this->inventory->update($inventoryData, $where);
+                $this->inventory->update($inventoryData, $where);
             }
 
             echo json_encode(["message"=>"Orded Added"]);

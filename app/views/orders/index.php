@@ -28,8 +28,6 @@ use App\Helpers\Session;
                         <th>Customer</th>
                         <th>Total Quantity</th>
                         <th>Total Amount</th>
-						<th>Status</th>
-						<th>Remarks</th>
                         <th>Action</th>
                     </thead>
                     <tbody></tbody>
@@ -125,8 +123,8 @@ use App\Helpers\Session;
                     <td>${orderdetail.PriceSold}</td>
                     <td class='qty'>${orderdetail.Quantity}</td>
                     <td>${orderdetail.SubTotal}</td>
-                    <td><button type='button' class='btn btn-danger btn-remove'><i class='fa fa-minus'></i></button></td>
-                </tr>`
+                    </tr>`
+                    // <td><button type='button' class='btn btn-danger btn-remove'><i class='fa fa-minus'></i></button></td>
             })
             tbody2.innerHTML = html;
 			
@@ -150,39 +148,39 @@ use App\Helpers\Session;
         .catch(err => console.log(err))
       
     }
-    if(button && button.classList.contains('cancelBtn')){
-        const orderStatus = row.cells[6].innerText;
-        if(orderStatus == "Cancelled"){
-            alert('Order Already Cancelled');
-            return
-        }
-        if (window.confirm("Do you really want to cancel this order?")) {
+//     if(button && button.classList.contains('cancelBtn')){
+//         const orderStatus = row.cells[6].innerText;
+//         if(orderStatus == "Cancelled"){
+//             alert('Order Already Cancelled');
+//             return
+//         }
+//         if (window.confirm("Do you really want to cancel this order?")) {
             
             
-            const formData = new FormData();
-            formData.append('orderId', orderid);
-            formData.append('status', "Cancelled")
-            formData.append('remarks', "Order Cancelled");    
+//             const formData = new FormData();
+//             formData.append('orderId', orderid);
+//             formData.append('status', "Cancelled")
+//             formData.append('remarks', "Order Cancelled");    
             
 
-            fetch('/orders/cancel_order', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(responseData=>{
+//             fetch('/orders/cancel_order', {
+//                 method: 'POST',
+//                 body: formData
+//             })
+//             .then(response => response.json())
+//             .then(responseData=>{
                 
-                if(responseData){
-                    alert(responseData.message);
-                    window.location.href = '/orders'
-;                }
-            })
-            .catch(err=> console.log(err))
+//                 if(responseData){
+//                     alert(responseData.message);
+//                     window.location.href = '/orders'
+// ;                }
+//             })
+//             .catch(err=> console.log(err))
 
             
-        }
+//         }
 
-    }
+//     }
 });  
 
 // Function to populate orders into the orders table  
@@ -197,12 +195,9 @@ function populateOrdersToOrdersTable() {
                 <td>${order.Customer}</td>  
                 <td>${order.TotalQuantity}</td>  
                 <td>${order.TotalAmount}</td>
-                <td>${order.Status}</td>
-                <td>${order.Remarks}</td>
-                <td>  
+                <td>
                     <button class='btn btn-success viewBtn'><i class='fa fa-eye'></i></button>
                     <button class='btn btn-warning editBtn'><i class='fa fa-edit text-light'></i></button>
-                    <button class='btn btn-danger cancelBtn'><i class='fa fa-close'></i></button>
                 </td>  
             </tr>  
     `})// Use map and join to create and set innerHTML  
@@ -297,9 +292,15 @@ function populateOrdersToOrdersTable() {
                         // Optionally, update the order items array
                         const orderitemId = row.children[0].innerText; // Get the order item ID
                         // updateOrderItems = updateOrderItems.filter(item => item.orderItemId !== orderitemId);
+                        const orderId = row.children[1].innerText;
+                        const formData = new FormData();
+                        formData.append('orderItemId', orderitemId);
+                        formData.append('orderId', orderId);
 
-                
-                        fetch('/orderdetails/remove_orderdetail/'+orderitemId)
+                        fetch('/orderdetails/remove_orderdetail',{
+                            method:'POST',
+                            body:formData
+                        })
                         .then(response => response.json())
                         .then(responseData => {
                             console.log(responseData)

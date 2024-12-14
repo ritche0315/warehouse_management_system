@@ -29,7 +29,7 @@ include(APPDIR.'views/layouts/sbnav.php');
                             </div>
                             <div class="control-group">
                                 <label for="quantity" class='control-label'>Quantity</label>
-                                <input type="number" name="quantity" id="quantity" class='form-control' onkeyup='quantityOnKeyUp()'>
+                                <input type="number" name="quantity" id="quantity" class='form-control' onkeyup='onKeyUpQunatity()' onchange='onKeyUpQunatity()' required>
                             </div>
                         </div>
                     </div>
@@ -60,6 +60,13 @@ include(APPDIR.'views/layouts/sbnav.php');
     const currentQuantity = document.querySelector('#currentQuantity')
     const quantity = document.querySelector('#quantity')
     var products = <?php echo json_encode($products); ?>
+    
+    function onKeyUpQunatity(){
+        if(quantity.value <= 0 && quantity.value != ""){
+            alert('Please enter quantity value not less than or equal to 0');
+            quantity.value = "";
+        }
+    }
 
     window.onload = (()=>{
         populateProductOnProductSelect()

@@ -44,7 +44,8 @@
                       <th>Price</th>
                       <th>Quantity</th>
                       <th>Subtotal</th>
-                      <th>Action</th>
+                      <!-- <th>Remarks</th> -->
+                      <!-- <th>Action</th> -->
                     </thead>
                     <tbody></tbody>
                   </table>
